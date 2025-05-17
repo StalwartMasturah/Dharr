@@ -22,8 +22,9 @@ class PreorderRequest(models.Model):
         ('Cancelled', 'Cancelled'),
         ('On Hold', 'On Hold'),
     ]
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     order_type= models.CharField(max_length=50, choices=ORDER_TYPES, default='self')
+    # item = models.ForeignKey('Item', on_delete=models.CASCADE, blank=True, null=True)
     Item_name = models.CharField(max_length= 50)
     description = models.TextField(blank=True)
     item_image = models.ImageField(upload_to='preorder_images/', height_field=None, width_field=None, max_length=None,blank=True, null=True) 
@@ -66,6 +67,8 @@ def status_message(self):
     
     
 class PreorderRequestComment(models.Model):
+    # add the preorder request here as foreign key
+    PreorderRequest= models.ForeignKey(PreorderRequest, on_delete=models.CASCADE, related_name='comments', null=True, blank=True)
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

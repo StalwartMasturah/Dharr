@@ -1623,7 +1623,7 @@ h6 {
 }
 
 .footer .footer-main .footer-links li:before {
-  content: "→";
+  content: "\2192";
   position: absolute;
   left: 0;
   top: 0;

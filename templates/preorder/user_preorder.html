@@ -13,7 +13,7 @@
         <ul>
             {%for preoder in preorders%}
                 <li>
-                    <a href="{% url 'preorder:preorder_detail' preoder.id %}">{{ preoder.product.name }}</a>
+                    <a href="{% url 'preorder:detail' preoder.id %}">{{ preoder.product.name }}</a>
                     <p>Preorder Date: {{ preoder.preorder_date }}</p>
                     
                     <p>Status: {{ preoder.status }}</p>

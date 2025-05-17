@@ -1,32 +1,38 @@
+{% extends "base.html" %}
 {% load static%}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customized Gift Preorder</title>
-    <link rel="stylesheet" href="{% static 'preorder/css/bootstrap.min.css' %}">
-    
-</head>
-<body>
+{% block title %}Preorder A Gift{% endblock %}
+{% block css %}
+<link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
+{%endblock%}
+{% block style %}
+<style></style>
+{% endblock%}
+{% block content %}
+<section>
     <div class="container">
-        <h2>Customized Gift Preorder</h2>
-        
-        {% if messages %}
-            {% for message in messages %}
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Preorder a Customized Gift</h2>
+                <p>Fill out the form below to preorder a customized gift. We will contact you with further details.</p>
+                {% if messages %}
+                {% for message in messages %}
                 <div class="alert alert-success">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
+                {% endfor %}
+                {% endif %}
 
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Submit Preorder</button>
-        </form>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Submit Preorder</button>
+                </form>
 
-        <br>
-        <a href="{% url 'preorder:preorder_history' %}" class="btn btn-secondary">View My Preorders</a>
+                <br>
+                <a href="{% url 'preorder:history' %}" class="btn btn-secondary">View My Preorders</a>
+            </div>
+            <div class="col-md-4">
+                
+            </div>
+        </div>
     </div>
-
-</body>
-</html> 
+</section>
+{%endblock%}

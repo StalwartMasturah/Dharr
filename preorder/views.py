@@ -44,3 +44,8 @@ def customized_gift_preorder(request):
     else:
         form = PreorderRequestForm()
     return render(request, 'preorder/customized_gift_preorder.html', {'form': form})
+
+
+def preorder_detail(request, id):
+    print(id)
+    return render(request, 'preorder/customized_gift_preorder.html')
