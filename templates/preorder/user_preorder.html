@@ -1,0 +1,33 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preorder</title>
+    <link rel="stylesheet" href="{% static 'preorder/css/bootstrap.min.css' %}">
+</head>
+<body>
+    <h2> My Preordered Goods</h2>
+    {% if preorders %}
+        <ul>
+            {%for preoder in preorders%}
+                <li>
+                    <a href="{% url 'preorder:preorder_detail' preoder.id %}">{{ preoder.product.name }}</a>
+                    <p>Preorder Date: {{ preoder.preorder_date }}</p>
+                    
+                    <p>Status: {{ preoder.status }}</p>
+                </li>
+            {% endfor %}
+            <li> 
+        </ul>
+            {% else %}
+                <p>You have no preorders.</p>
+            {% endif %}
+    <br>
+    <a href="{% url 'preorder:preorder_create' %}">Create a new preorder</a>
+    <script src="{% static 'preorder/js/bootstrap.bundle.min.js' %}"></script>
+    </body>
+    </html>
+
+
