@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
+
 
 # Create your models here.
 class PreorderRequest(models.Model):
@@ -29,7 +31,21 @@ class PreorderRequest(models.Model):
     description = models.TextField(blank=True)
     item_image = models.ImageField(upload_to='preorder_images/', height_field=None, width_field=None, max_length=None,blank=True, null=True) 
     status = models.CharField(max_length=50, default='Pending') 
-    delivery_address = models.TextField(blank=True)
+    address = models.TextField(blank=True)
+    city = models.CharField(max_length=50, blank=True)
+    state = models.CharField(max_length=50, blank=True)
+    zip_code = models.CharField(
+        max_length=6,
+        validators=[RegexValidator(r'^\d{6}$', message='Enter a valid 6-digit ZIP code')]
+        )
+        
+    # New recipient fields for 'someone' order type
+    recipient_name = models.CharField(max_length=100, blank=True)
+    recipient_address = models.TextField(blank=True)
+    recipient_city = models.CharField(max_length=50, blank=True)
+    recipient_phone = models.CharField(max_length=11, blank=True)
+    recipient_zip_code = models.CharField(max_length=6, blank=True, validators=[RegexValidator(r'^\d{6}$', message='Enter a valid 6-digit ZIP code')])
+    custom_message = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -63,9 +79,8 @@ def status_message(self):
         return f"Hi {name}, Your preorder request for {self.Item_name} is on hold."
     else:
         return f"Hi {name}, Your preorder request for {self.Item_name} has an unknown status."
-    
-    
-    
+  
+  
 class PreorderRequestComment(models.Model):
     # add the preorder request here as foreign key
     PreorderRequest= models.ForeignKey(PreorderRequest, on_delete=models.CASCADE, related_name='comments', null=True, blank=True)
@@ -76,3 +91,4 @@ class PreorderRequestComment(models.Model):
     def __str__(self):
         return f"Comment by {self.user.username} on {self.preorder_request.Item_name}"
     
+ 

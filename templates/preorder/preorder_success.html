@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static%}
+{% block title %}Successful{% endblock %}
+{% block css %}
+<link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
+{%endblock%}
+{% block style %}
+<style></style>
+{% endblock%}
+{% block content %}<html>
+<head>
+    <title>Preorder Successful</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10">
+                <h2>Pre-order Successful</h2>
+                <p>Your pre-order has been successfully submitted. We will contact you with further details.</p>
+            </div>
+            <div class="col-md-4">
+                <!-- Additional content can go here -->
+            </div>
+        </div>
+ 
+</body>
+</html>
+{%endblock%}

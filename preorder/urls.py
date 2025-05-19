@@ -8,4 +8,9 @@ urlpatterns = [
     path('history/', preorder_history, name='history'),
     path('gift/', customized_gift_preorder, name='gift'),
     path('detail/<int:id>', preorder_detail, name='detail'),
+    path('success/', preorder_success, name='preorder_success'),
+    path('self/', preorder_for_self, name='self'),
+    path('someone/', preorder_for_someone, name='someone'),
+
+
    ]

@@ -5,7 +5,8 @@ from .forms import PreorderRequestForm
 from django.contrib import messages
 from django.shortcuts import redirect
 from .forms import CustomGiftForm
-
+from .forms import PreorderRequestForm
+from .forms import PreorderRequestFormSomeone
 # Create your views here.
 @login_required
 def submit_preorder(request):
@@ -49,3 +50,34 @@ def customized_gift_preorder(request):
 def preorder_detail(request, id):
     print(id)
     return render(request, 'preorder/customized_gift_preorder.html')
+
+def preorder_success(request):
+    return render(request, 'preorder/preorder_success.html')
+
+def preorder_for_self(request):
+    if request.method == 'POST':
+        form = PreorderRequestForm(request.POST, request.FILES) 
+        if form.is_valid():
+            preorder_request = form.save(commit=False)
+            preorder_request.user = request.user
+            preorder_request.order_type = 'For Yourself'
+            preorder_request.save()
+            messages.success(request, "Your preorder request for yourself has been submitted successfully.")
+            return redirect('preorder:preorder_success')
+    else:
+        form = PreorderRequestForm()
+    return render(request, 'preorder/for_self.html', {'form': form})
+ 
+def preorder_for_someone(request):
+    if request.method == 'POST':
+        form = PreorderRequestFormSomeone(request.POST, request.FILES)
+        if form.is_valid():
+            preorder_request = form.save(commit=False)
+            preorder_request.user = request.user
+            preorder_request.order_type = 'For Someone'
+            preorder_request.save()
+            messages.success(request, "Your preorder request for someone has been submitted successfully.")
+            return redirect('preorder:preorder_success')
+    else:
+        form = PreorderRequestFormSomeone()
+    return render(request, 'preorder/for_someone.html', {'form': form})

@@ -1,7 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <title> {% block title %} {%endblock%} | Dharr Perfume Store</title>
@@ -28,13 +27,8 @@
   <link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   <!-- Add any other static CSS if you have -->
+ 
 
-  <style>
-    a:hover {
-      color: #debc61;
-       !important;
-    }
-  </style>
   {% block style %} {% endblock%}
   {% block css %}{%endblock%}
 </head>
@@ -71,8 +65,8 @@
                   <i class="bi bi-box2-heart me-2"></i>Preorder
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Preorder for yourself</a></li>
-                  <li><a class="dropdown-item" href="#">For someone</a></li>
+                  <li><a class="dropdown-item" href="/preorder/self">Preorder for yourself</a></li>
+                  <li><a class="dropdown-item" href="/preorder/someone">For someone</a></li>
                   <li><a class="dropdown-item" href="/preorder/gift">Customize a gift for someone</a></li>
                 </ul>
               </div>
@@ -951,7 +945,7 @@
                 </div>
                 <div class="contact-item">
                   <i class="bi bi-envelope"></i>
-                  <span>support@dharrincense.com</span>
+                  <span>dharrincense@gmail.com</span>
                 </div>
                 <div class="contact-item">
                   <i class="bi bi-clock"></i>
