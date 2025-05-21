@@ -1,1 +1,1 @@
-web: gunicorn Dharr.wsgi --log-file-
+web: gunicorn Dharr.wsgi --log-file -
