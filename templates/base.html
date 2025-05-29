@@ -56,7 +56,7 @@
           <div class="col-lg-6">
             <div class="d-flex justify-content-end">
               <div class="top-bar-item me-4">
-                <a href="track-order.html">
+                <a href="#">
                   <i class="bi bi-truck me-2"></i>Track Order
                 </a>
               </div>
@@ -216,8 +216,8 @@
                     <span class="cart-total-price">$279.97</span>
                   </div>
                   <div class="cart-actions">
-                    <a href="cart.html" class="btn btn-outline-primary">View Cart</a>
-                    <a href="checkout.html" class="btn btn-primary">Checkout</a>
+                    <a href="#" class="btn btn-outline-primary">View Cart</a>
+                    <a href="#" class="btn btn-primary">Checkout</a>
                   </div>
                 </div>
               </div>
@@ -241,8 +241,8 @@
             <!--<li><a href="category.html">Category</a></li>-->
             <!--<li><a href="product-details.html">Product Details</a></li> -->
             <li><a href="{% url 'products' %}">Products</a></li>
-            <li><a href="cart.html">Cart</a></li>
-            <li><a href="checkout.html">Checkout</a></li>
+            <li><a href="#">Cart</a></li>
+            <li><a href="#">Checkout</a></li>
             <li class="dropdown"><a href="#"><span>Quick Shop</span> <i
                   class="bi bi-chevron-down toggle-dropdown"></i></a>
               <ul>
@@ -353,8 +353,8 @@
                           <img src="assets/img/product/product-1.webp" alt="Featured Product" loading="lazy">
                         </div>
                         <div class="product-info">
-                          <h5>Premium Headphones</h5>
-                          <p class="price">$129.99</p>
+                          {% comment %} <h5>Premium Headphones</h5> {% endcomment %}
+                          {% comment %} <p class="price">$129.99</p> {% endcomment %}
                           <a href="#" class="btn-view">View Product</a>
                         </div>
                       </div>
@@ -363,8 +363,8 @@
                           <img src="assets/img/product/product-2.webp" alt="Featured Product" loading="lazy">
                         </div>
                         <div class="product-info">
-                          <h5>Smart Watch</h5>
-                          <p class="price">$199.99</p>
+                          {% comment %} <h5>Smart Watch</h5> {% endcomment %}
+                          {% comment %} <p class="price">$199.99</p> {% endcomment %}
                           <a href="#" class="btn-view">View Product</a>
                         </div>
                       </div>
@@ -373,8 +373,8 @@
                           <img src="assets/img/product/product-3.webp" alt="Featured Product" loading="lazy">
                         </div>
                         <div class="product-info">
-                          <h5>Wireless Earbuds</h5>
-                          <p class="price">$89.99</p>
+                          {% comment %} <h5>Wireless Earbuds</h5> {% endcomment %}
+                          {% comment %} <p class="price">$89.99</p> {% endcomment %}
                           <a href="#" class="btn-view">View Product</a>
                         </div>
                       </div>
@@ -383,8 +383,8 @@
                           <img src="assets/img/product/product-4.webp" alt="Featured Product" loading="lazy">
                         </div>
                         <div class="product-info">
-                          <h5>Bluetooth Speaker</h5>
-                          <p class="price">$79.99</p>
+                          {% comment %} <h5>Bluetooth Speaker</h5> {% endcomment %}
+                          {% comment %} <p class="price">$79.99</p> {% endcomment %}
                           <a href="#" class="btn-view">View Product</a>
                         </div>
                       </div>
@@ -400,8 +400,8 @@
                           <span class="badge-new">New</span>
                         </div>
                         <div class="product-info">
-                          <h5>Fitness Tracker</h5>
-                          <p class="price">$69.99</p>
+                          {% comment %} <h5>Fitness Tracker</h5> {% endcomment %}
+                          {% comment %} <p class="price">$69.99</p> {% endcomment %}
                           <a href="#" class="btn-view">View Product</a>
                         </div>
                       </div>
@@ -411,8 +411,8 @@
                           <span class="badge-new">New</span>
                         </div>
                         <div class="product-info">
-                          <h5>Wireless Charger</h5>
-                          <p class="price">$39.99</p>
+                          {% comment %} <h5>Wireless Charger</h5> {% endcomment %}
+                          {% comment %} <p class="price">$39.99</p> {% endcomment %}
                           <a href="#" class="btn-view">View Product</a>
                         </div>
                       </div>
@@ -422,8 +422,8 @@
                           <span class="badge-new">New</span>
                         </div>
                         <div class="product-info">
-                          <h5>Smart Bulb Set</h5>
-                          <p class="price">$49.99</p>
+                          {% comment %} <h5>Smart Bulb Set</h5> {% endcomment %}
+                          {% comment %} <p class="price">$49.99</p> {% endcomment %}
                           <a href="#" class="btn-view">View Product</a>
                         </div>
                       </div>
@@ -433,8 +433,8 @@
                           <span class="badge-new">New</span>
                         </div>
                         <div class="product-info">
-                          <h5>Portable Power Bank</h5>
-                          <p class="price">$59.99</p>
+                          {% comment %} <h5>Portable Power Bank</h5> {% endcomment %}
+                          {% comment %} <p class="price">$59.99</p> {% endcomment %}
                           <a href="#" class="btn-view">View Product</a>
                         </div>
                       </div>
@@ -447,44 +447,44 @@
                       <div class="product-card">
                         <div class="product-image">
                           <img src="assets/img/product/product-9.webp" alt="Sale Product" loading="lazy">
-                          <span class="badge-sale">-30%</span>
+                          {% comment %} <span class="badge-sale">-30%</span> {% endcomment %}
                         </div>
                         <div class="product-info">
-                          <h5>Wireless Keyboard</h5>
-                          <p class="price"><span class="original-price">$89.99</span> $62.99</p>
+                          {% comment %} <h5>Wireless Keyboard</h5> {% endcomment %}
+                          {% comment %} <p class="price"><span class="original-price">$89.99</span> $62.99</p> {% endcomment %}
                           <a href="#" class="btn-view">View Product</a>
                         </div>
                       </div>
                       <div class="product-card">
                         <div class="product-image">
                           <img src="assets/img/product/product-10.webp" alt="Sale Product" loading="lazy">
-                          <span class="badge-sale">-25%</span>
+                          {% comment %} <span class="badge-sale">-25%</span> {% endcomment %}
                         </div>
                         <div class="product-info">
-                          <h5>Gaming Mouse</h5>
-                          <p class="price"><span class="original-price">$59.99</span> $44.99</p>
+                          {% comment %} <h5>Gaming Mouse</h5> {% endcomment %}
+                          {% comment %} <p class="price"><span class="original-price">$59.99</span> $44.99</p> {% endcomment %}
                           <a href="#" class="btn-view">View Product</a>
                         </div>
                       </div>
                       <div class="product-card">
                         <div class="product-image">
                           <img src="assets/img/product/product-11.webp" alt="Sale Product" loading="lazy">
-                          <span class="badge-sale">-40%</span>
+                          {% comment %} <span class="badge-sale">-40%</span> {% endcomment %}
                         </div>
                         <div class="product-info">
-                          <h5>Desk Lamp</h5>
-                          <p class="price"><span class="original-price">$49.99</span> $29.99</p>
+                          {% comment %} <h5>Desk Lamp</h5> {% endcomment %}
+                          {% comment %} <p class="price"><span class="original-price">$49.99</span> $29.99</p> {% endcomment %}
                           <a href="#" class="btn-view">View Product</a>
                         </div>
                       </div>
                       <div class="product-card">
                         <div class="product-image">
                           <img src="assets/img/product/product-12.webp" alt="Sale Product" loading="lazy">
-                          <span class="badge-sale">-20%</span>
+                          {% comment %} <span class="badge-sale">-20%</span> {% endcomment %}
                         </div>
                         <div class="product-info">
-                          <h5>USB-C Hub</h5>
-                          <p class="price"><span class="original-price">$39.99</span> $31.99</p>
+                          {% comment %} <h5>USB-C Hub</h5> {% endcomment %}
+                          {% comment %} <p class="price"><span class="original-price">$39.99</span> $31.99</p> {% endcomment %}
                           <a href="#" class="btn-view">View Product</a>
                         </div>
                       </div>
