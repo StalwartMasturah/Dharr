@@ -16,7 +16,7 @@
       <div class="container">
         <nav class="breadcrumbs">
           <ol>
-            <li><a href="index.html">Home</a></li>
+            <li><a href="{% url 'about:home'%}">Home</a></li>
             <li class="current">About</li>
           </ol>
         </nav>
@@ -42,11 +42,12 @@
               <p class="about-description">We are passionate about sharing the beauty of incense and self-care with the world, and we invite you to join us on this journey. Whether you're looking for a moment of tranquility, a thoughtful gift, or simply a way to enhance your daily rituals, Dharr Incense has something special for you.</p>
             </div>
         </div>
+
         <div class="row g-4">
           <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
             <div class="content-card">
-              <div class="card-image">
-                 <img src="{% static 'img/All/lal.jpg' %}" style="width: 150%; height: 400px;" class="img-fluid"/>
+              <div class="card-image" style="height:20rem;">
+                 <img src="{% static 'img/All/lal.jpg' %}" style="" class="img-fluid"/>
               </div>
               <div class="card-content">
                 <h3>Fragrances That Speak Without Words</h3>
@@ -58,13 +59,13 @@
 
           <div class="col-lg-4" data-aos="fade-up" data-aos-delay="400">
             <div class="content-card">
-              <div class="card-image">
-                    <img src="{% static 'img/All/sef.jpg' %}"  style="width: 150%; height: 450px;" class="img-fluid"/> 
+              <div class="card-image" style="height:20rem;">
+                    <img src="{% static 'img/All/sef.jpg' %}"  style="" class="img-fluid"/> 
                </div>
               <div class="card-content">
                  <h3>Self-Care, Redefined</h3>
                 <p> We offer essentials that bring balance to your day — from botanical bath soaks to relaxing room mists. It’s your daily reminder to slow down, breathe, and be present.
-
+                </p>
                  <a href="#" class="read-more">
                   Learn More <i class="bi bi-arrow-right"></i>
                 </a>
@@ -74,9 +75,8 @@
 
           <div class="col-lg-4" data-aos="fade-up" data-aos-delay="400">
             <div class="content-card">
-              <div class="card-image">
-                        <img src="{% static 'img/All/tot.jpg' %}" style="width: 150%; height: 450px;" class="img-fluid"/>
-
+              <div class="card-image" style="height:20rem;">
+                        <img src="{% static 'img/All/tot.jpg' %}" style="" class="img-fluid"/>
                </div>
               <div class="card-content">
                 <h3>Thoughtful Gifting Made Easy</h3>

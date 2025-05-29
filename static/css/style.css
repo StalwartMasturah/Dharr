@@ -1,1 +1,95 @@
- 
+.btn-brand {
+  background-color: #debc61;
+  color: #222; /* Adjust for readability */
+  border: none;
+}
+
+.btn-brand:hover {
+  background-color: #cda942; /* Slightly darker on hover */
+  color: #111;
+}
+    .php-email-form input,
+  .php-email-form textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    transition: all 0.3s ease-in-out;
+    font-family: inherit;
+  }
+
+   .php-email-form input:focus,
+  .php-email-form textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(222, 188, 97, 0.4);
+    border-color: #debc61;
+  }
+
+   .php-email-form {
+    background-color: #fff;
+    border-radius: 12px;
+  }
+
+   .sent-message {
+    margin-top: 10px;
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    padding: 10px;
+    border-radius: 6px;
+  }
+
+/* Sidebar Navigation Styles */
+.sidebar-nav {
+  background-color: #fff; /* Or #f8f9fa for a light grey */
+  border: 1px solid #e9ecef;
+}
+
+.sidebar-nav .card-header {
+  background-color: #f8f9fa;
+  font-weight: bold;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.sidebar-nav .nav-link {
+  color: #debc61;
+  padding: 0.65rem 1.25rem;
+  border-bottom: 1px solid #f0f0f0; /* Lighter separator for links */
+  font-size: 0.95rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+
+}
+
+.sidebar-nav .nav-item:last-child .nav-link {
+  border-bottom: none;
+}
+
+.sidebar-nav .dropdown-item {
+  padding: 0.5rem 1.25rem;  
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;  
+  font-size: 0.9rem; 
+}
+
+.sidebar-nav .dropdown-menu li:last-child .dropdown-item {
+  border-bottom: none;  
+}
+.sidebar-nav .nav-link:hover,
+.sidebar-nav .nav-link.active {
+  color: #debc61;  
+  background-color: #f8f9fa;
+}
+
+.sidebar-nav .dropdown-menu {
+  border-radius: 0 0 0.25rem 0.25rem;
+    width: 100%;  
+  border-top: none;  
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.sidebar-nav .dropdown-item:hover,
+.sidebar-nav .dropdown-item:focus {
+  color: #debc61;
+  background-color: #f8f9fa;
+}

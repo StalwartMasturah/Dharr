@@ -50,9 +50,7 @@ class PreorderRequest(models.Model):
 
     def __str__(self):
           return f"{self.user.username} wants to preorder {self.Item_name}"
-
-
-
+      
 def status_message(self):
     name = self.user.first_name
     if self.status == 'Pending':
