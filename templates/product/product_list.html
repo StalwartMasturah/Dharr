@@ -31,6 +31,7 @@
                <li class="nav-item">
                 <a class="nav-link" aria-current="page" href="#">New Arrivals</a>
               </li>
+              
               <li class="nav-item">
                 <a class="nav-link" aria-current="page" href="#">Trending Perfumes</a>
               </li>
@@ -149,51 +150,62 @@
         <div class="col-lg-9 col-md-8">
           <section class="product-list section">
             {% for category_name, category_products in grouped_products.items %}
-              <div class="category-section mb-5">
-                <h3 class="mb-4 text-uppercase">{{ category_name }}</h3>
-                <div class="row g-4">
-                  {% for product in category_products|slice:":5" %}
-                    <div class="col-12 col-md-6 col-lg-3">
-                      <div class="product-card h-100">
-                        <div class="product-image">
-                          <img src="{{ product.default_image.url }}" class="img-fluid main-img w-100" alt="{{ product.name }}">
-                          <img src="{{ product.default_image.url }}" alt="{{ product.name }} Hover" class="img-fluid hover-img w-100">
-                          <div class="product-overlay">
-                             <a href="#" class="btn-cart"> 
-                              <i class="bi bi-cart-plus"></i> Add to Cart
-                            </a> 
-                            <div class="product-actions">
-                              <a href="#" class="action-btn"><i class="bi bi-heart"></i></a>  
-                              <a href="#" class="action-btn"><i class="bi bi-eye"></i></a>  
-                              <a href="#" class="action-btn"><i class="bi bi-info-circle"></i></a>  
+              {% if forloop.counter <= 2 %} {# Display only the first two categories #}
+                <div class="category-section mb-5">
+                  <h3 class="mb-4 text-uppercase">{{ category_name }}</h3>
+                  <div class="row g-4">
+                    {% for product in category_products|slice:":5" %}
+                      <div class="col-12 col-md-6 col-lg-3">
+                        <div class="product-card h-100">
+                          <div class="product-image">
+                            <img src="{{ product.default_image.url }}" class="img-fluid main-img w-100" alt="{{ product.name }}">
+                            <img src="{{ product.default_image.url }}" alt="{{ product.name }} Hover" class="img-fluid hover-img w-100">
+                            <div class="product-overlay">
+                               <a href="#" class="btn-cart"> 
+                                <i class="bi bi-cart-plus"></i> Add to Cart
+                              </a> 
+                              <div class="product-actions">
+                                <a href="#" class="action-btn"><i class="bi bi-heart"></i></a>  
+                                <a href="#" class="action-btn"><i class="bi bi-eye"></i></a>  
+                                <a href="#" class="action-btn"><i class="bi bi-info-circle"></i></a>  
+                              </div>
+                            </div>
+                          </div>
+                          <div class="product-info ">
+                            <strong class="product-name-highlight">{{ product.name }}</strong> {# Use CSS class instead of inline style #}
+                            <div class="product-price">
+                              <span class="current-price">₦{{ product.price }}</span>
+                            </div>
+                            <div class="product-rating">
+                              <p>{{ product.description|truncatewords:10|capfirst }}</p>
                             </div>
                           </div>
                         </div>
-                        <div class="product-info ">
-                          <strong class="product-name-highlight">{{ product.name }}</strong> {# Use CSS class instead of inline style #}
-                          <div class="product-price">
-                            <span class="current-price">₦{{ product.price }}</span>
-                          </div>
-                          <div class="product-rating">
-                            <p>{{ product.description|truncatewords:10|capfirst }}</p>
-                          </div>
-                        </div>
                       </div>
-                    </div>
-                  {% endfor %}
+                    {% endfor %}
+                  </div>
                 </div>
-              </div>
-            {% if category_products|length > 5 %} 
-              <div class="text-center mt-4 mb-5"> 
-                <a href="#" class="btn btn-view-more">
-                        View More {{ category_name }} Products
-                  </a>
-               </div>
-            {% endif %}
+              {% if category_products|length > 5 %} 
+                <div class="text-center mt-4 mb-5"> 
+                  <a href="#" class="btn btn-view-more">
+                          View More {{ category_name }} Products
+                    </a>
+                 </div>
+              {% endif %}
+            {% endif %} {# End if forloop.counter <= 2 #}
             {% endfor %}
+
+              {% if grouped_products|length > 2 %}
+            <div class="text-center mt-5 mb-5">
+              <a href="{% url 'products:products' %}" class="btn btn-brand btn-lg">
+                View All Categories <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+            {% endif %} 
           </section>
         </div> <!-- End Main Content Column -->
       </div> <!-- End Row -->
     </div> <!-- End Container for sidebar + content -->
   </main>
 {% endblock %}
+ 

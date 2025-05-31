@@ -3,16 +3,11 @@ from .models import Product, Category, subCategory
 from django.conf import settings
 from collections import defaultdict
 
-
 # Create your views here.
-
-
-# View to list all available products
 def product_list(request):
     products = Product.objects.filter(is_available=True)
     return render(request, 'product/product_list.html', {'products': products, 'MEDIA_URL': settings.MEDIA_URL})
 
-# View to filter products by category
 def products_by_category(request, category_id):
     category = get_object_or_404(Category, id=category_id)
     products = Product.objects.filter(category=category, is_available=True)
@@ -21,7 +16,6 @@ def products_by_category(request, category_id):
         'products': products
     })
 
-# View to filter products by subcategory
 def products_by_subcategory(request, subcategory_id):
     subcategory = get_object_or_404(subCategory, id=subcategory_id)
     products = Product.objects.filter(subcategory=subcategory, is_available=True)

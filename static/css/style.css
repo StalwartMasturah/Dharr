@@ -5,8 +5,8 @@
 }
 
 .btn-brand:hover {
-  background-color: #cda942; /* Slightly darker on hover */
-  color: #111;
+  background-color: #ffff; /* Slightly darker on hover */
+  color: #debc61;
 }
     .php-email-form input,
   .php-email-form textarea {
