@@ -33,3 +33,9 @@ def product_list(request):
     return render(request, 'product/product_list.html', {
         'grouped_products': dict(grouped_products),
     })
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, id=product_id, is_available=True)
+    return render(request, 'product/product_detail.html', {
+        'product': product,
+        'MEDIA_URL': settings.MEDIA_URL
+    })

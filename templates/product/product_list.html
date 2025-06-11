@@ -165,10 +165,16 @@
                                 <i class="bi bi-cart-plus"></i> Add to Cart
                               </a> 
                               <div class="product-actions">
-                                <a href="#" class="action-btn"><i class="bi bi-heart"></i></a>  
-                                <a href="#" class="action-btn"><i class="bi bi-eye"></i></a>  
-                                <a href="#" class="action-btn"><i class="bi bi-info-circle"></i></a>  
-                              </div>
+                                <a href="#" class="action-btn" id="add-to-wishlist-btn"><i class="bi bi-heart"></i></a>
+                                <a href="#" class="action-btn" id="quick-view-btn"><i class="bi bi-eye"></i></a>   
+                                <a href="javascript:void(0);" 
+                                  class="action-btn info-btn"
+                                  style = "cursor: pointer;"
+                                  data-product-name="{{ product.name }}" 
+                                  data-product-details="{{ product.details|escape }}">
+                                 <i class="bi bi-info-circle"></i>
+                                </a>
+                               </div>
                             </div>
                           </div>
                           <div class="product-info ">
@@ -206,6 +212,14 @@
         </div> <!-- End Main Content Column -->
       </div> <!-- End Row -->
     </div> <!-- End Container for sidebar + content -->
+    <!-- Custom Modal HTML -->
+    <div id="customModal" class="custom-modal">
+    <div class="custom-modal-content">
+    <span class="custom-close">&times;</span>
+    <h2 id="modalProductName"></h2>
+    <p id="modalProductDetails"></p>
+  </div>
+</div>
   </main>
-{% endblock %}
- 
+  <script src="{% static 'js/main.js' %}"></script>
+{% endblock %} 

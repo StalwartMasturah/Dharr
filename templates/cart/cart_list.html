@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Your Cart{% endblock %}
+
+{% block css %}
+<link href="{% static 'CSS/style.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<main class="main">
+  <div class="page-title light-background">
+    <div class="container">
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="{% url 'about:home' %}">Home</a></li>
+          <li class="current">Cart</li>
+        </ol>
+      </nav>
+      <h1>Your Cart</h1>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    {% if cart_items %}
+      <table class="table table-bordered align-middle text-center">
+        <thead class="table-light">
+          <tr>
+            <th>Product</th>
+            <th>Name</th>
+            <th>Unit Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in cart_items %}
+          <tr>
+            <td style="width: 100px;">
+              <img src="{{ item.product.default_image.url }}" alt="{{ item.product.name }}" class="img-fluid" style="height: 60px;">
+            </td>
+            <td>{{ item.product.name }}</td>
+            <td>₦{{ item.product.price }}</td>
+            <td>{{ item.quantity }}</td>
+            <td><strong>₦{{ item.total_price }}</strong></td>
+          </tr>
+          {% endfor %}
+          <tr>
+            <td colspan="4" class="text-end"><strong>Grand Total:</strong></td>
+            <td><strong>₦{{ grand_total }}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    {% else %}
+      <p class="text-center">Your cart is empty.</p>
+    {% endif %}
+  </div>
+</main>
+{% endblock %}

@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'contact.apps.ContactConfig',
     'whitenoise.runserver_nostatic',
     'product.apps.ProductConfig',
+    'cart.apps.CartConfig',
+    'about.apps.AboutConfig'
 
 ]
 
