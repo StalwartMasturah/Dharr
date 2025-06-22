@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static%}
+{% block title %} My Wishlist{% endblock %}
+{% block css %}
+<link href="{% static 'CSS/style.css' %}" rel="stylesheet">
+{%endblock%}
+{% block style %}
+<style></style>
+{% endblock%}
+{% block content %}
+<main class="main">
+ <div class="wishlist-page">
+
+  {% if products %}
+    <h2 class="text-center my-4">Your Wishlist</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 px-4">
+      {% for product in products %}
+        <div class="bg-white p-4 shadow rounded flex flex-col justify-between">
+          <img src="{{ product.default_image.url }}" alt="{{ product.name }}" class="w-full h-48 object-cover mb-2 rounded">
+          <h4 class="text-lg font-semibold">{{ product.name }}</h4>
+          <p class="text-sm text-gray-600 mb-2">₦{{ product.price }}</p>
+          
+          <form method="POST" action="{% url 'wishlist:remove' product.id %}">
+            {% csrf_token %}
+            <button type="submit" class="w-full py-2 mt-2 text-white rounded" style="background-color: #debc61;">
+              Remove from Wishlist
+            </button>
+          </form>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-8 mb-12">
+      <a href="{% url 'products:products' %}" class="btn brand color mt-4">Continue Shopping</a>
+    </div>
+
+  {% else %}
+    <div class="text-center py-16 mb-12">
+      <i class="bi bi-heart" style="font-size: 4rem; color: #debc61;"></i>
+      <p class="mt-4 text-lg font-semibold">No items saved yet</p>
+      <p class="text-gray-500">
+        Found an item you like?<br>
+        Tap on the heart-shaped icon next to the item to add to your wishlist.<br>
+        All your saved items will appear here.
+      </p>
+      <a href="{% url 'products:products' %}" class="btn btn-brand btn-lg">Continue Shopping</a>
+      <br>
+      <br>
+    </div>
+  {% endif %}
+ </div>
+  </div>
+</div>
+
+</main>
+{% endblock %}

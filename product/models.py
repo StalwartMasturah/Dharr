@@ -1,4 +1,8 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.conf import settings
+
+from django.utils import timezone
 
 # Create your models here.
 class Category(models.Model):
@@ -29,4 +33,17 @@ class Product(models.Model):
  
     def __str__(self):
         return self.name
-      
+    
+    
+class Wishlist(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    added_product = models.ForeignKey(Product, related_name='wishlist_items', on_delete=models.CASCADE)
+    added_on = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'added_product')  # Ensures one product per user
+        ordering = ['-added_on']
+
+    def __str__(self):
+        return f"{self.user.username} - {self.added_product.name}"
+ 

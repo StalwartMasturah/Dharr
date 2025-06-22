@@ -1,0 +1,120 @@
+{% extends 'base.html' %}   
+{% load static%}
+{% block title %}Store{% endblock %}
+{% block css %}
+<link href="{% static 'CSS/style.css' %}" rel="stylesheet">
+{%endblock%}
+{% block content %}
+   <main class="main">
+     <div class="page-title light-background">
+      <div class="container">
+        <nav class="breadcrumbs">
+          <ol>
+             <li><a href="{% url 'about:home' %}">Home</a></li>
+             <li class="current">Store</li>
+          </ol>
+        </nav>
+        <h1>Store</h1>
+      </div>
+    </div> 
+    <div class="container mt-4">
+      <div class="row">
+        {% include 'product/aside.html' %}
+
+        <!-- Main Content Column -->
+        <div class="col-lg-9 col-md-8">
+          <section class="product-list section">
+                <div class="row g-4">
+                {% for product in products %}
+                    <div class="col-xs-12 col-md-6 col-lg-3">
+                        <div class="product-card h-100">
+                            <div class="product-image">
+                            <img src="{{ product.default_image.url }}" class="img-fluid main-img w-100" alt="{{ product.name }}">
+                            <img src="{{ product.default_image.url }}" alt="{{ product.name }} Hover" class="img-fluid hover-img w-100">
+                            <div class="product-overlay">
+                                <a href="#" class="btn-cart"> 
+                                <i class="bi bi-cart-plus"></i> Add to Cart
+                                </a> 
+                                <div class="product-actions">
+                                    <a href= "{% url 'products:add_to_wishlist' product.id %}"
+                                        class="action-btn wishlist-btn" >
+                                        {% if product.id in user_wishlist %}
+                                        <i class="bi bi-heart-fill"></i>
+                                        {% else %}
+                                        <i class="bi bi-heart"></i>
+                                    {% endif %}
+                                    </a> 
+                                <a  href="javascript:void(0);" class="action-btn quick-view-btn" data-image-url="{{ product.default_image.url }}">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                    <a href="javascript:void(0);" 
+                                    class="action-btn info-btn"
+                                    style = "cursor: pointer;"
+                                    data-product-name="{{ product.name }}" 
+                                    data-product-details="{{ product.details|escape }}">
+                                    <i class="bi bi-info-circle"></i>
+                                </a>
+                                </div>
+                                
+                            </div>
+                            </div>
+                            <div class="product-info ">
+                            <strong class="product-name-highlight">{{ product.name }}</strong> {# Use CSS class instead of inline style #}
+                            <div class="product-price">
+                                <span class="current-price">₦{{ product.price }}</span>
+                            </div>
+                            <div class="product-rating">
+                                <p>{{ product.description|truncatewords:10|capfirst }}</p>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            <!-- Paginator -->
+             {% if products.has_other_pages %}
+             <br><br>
+             <div class="row">
+                <div class="col-6">
+                    <div class="d-flex mb-4">
+                        {% if products.has_previous %}
+                        <a href="?page={{prev_page}}" class="btn-cart">&lt;&lt;</a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="d-flex mb-4">
+                        {% if products.has_next %}
+                        <a href="?page={{next_page}}" class="btn-large btn-cart">&gt;&gt;</a>
+                        {% endif %}
+                    </div>
+                </div>
+             </div>
+
+            {% endif %}
+            <!-- Pagination Emds-->
+
+             
+          </section>
+        </div> <!-- End Main Content Column -->
+      </div> <!-- End Row -->
+    </div> <!-- End Container for sidebar + content -->
+    <!-- Custom Modal HTML -->
+    <div id="customModal" class="custom-modal">
+    <div class="custom-modal-content">
+    <span class="custom-close">&times;</span>
+    <h2 id="modalProductName"></h2>
+    <p id="modalProductDetails"></p>
+  </div>
+</div>
+    <!-- Quick View Modal -->
+  <div id="quickViewModal" class="quick-modal">
+  <div class="quick-modal-content">
+    <span class="quick-close" id="quickViewClose">&times;</span>
+    <img id="quickViewImage" src="" alt="Quick View Image" style="width: 100%; border-radius: 10px;" />
+  </div>
+  </div>
+</div>
+  </main>
+  <script src="{% static 'js/main.js' %}"></script>
+{% endblock %} 

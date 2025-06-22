@@ -1,7 +1,12 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Product, Category, subCategory
+from .models import Product, Category, subCategory,Wishlist
 from django.conf import settings
-from collections import defaultdict
+from collections import defaultdict 
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger 
 
 # Create your views here.
 def product_list(request):
@@ -23,19 +28,74 @@ def products_by_subcategory(request, subcategory_id):
         'subcategory': subcategory,
         'products': products
     })
+    
+def all_product_list(request):
+    #add pagination
+    categories = Category.objects.all()
+    products = Product.objects.all().order_by('-category')
+    # grouped_products = defaultdict(list)
+
+    # get users wishlist
+    user_wishlist = Wishlist.objects.filter(user=request.user).values_list('added_product_id', flat=True)
+
+    # for product in products:
+    #     grouped_products[product.category.name].append(product)
+        
+    page = request.GET.get('page', 1)
+    paginator = Paginator(products, 3)
+    
+    try:
+        top_products = paginator.page(page)
+        next_page = int(page) + 1
+        prev_page = int(page) - 1
+    except PageNotAnInteger:
+        top_products = paginator.page(1)
+    except EmptyPage:
+        top_products = paginator.page(paginator.num_pages)
+
+    return render(request, 'product/all_product_list.html', {
+        'products': top_products,
+        'user_wishlist' : list(user_wishlist),
+        'next_page': next_page, 'prev_page': prev_page
+    })
+    
+    
 def product_list(request):
     products = Product.objects.select_related('category')
     grouped_products = defaultdict(list)
+    # get users wishlist
+    user_wishlist = Wishlist.objects.filter(user=request.user).values_list('added_product_id', flat=True)
 
     for product in products:
         grouped_products[product.category.name].append(product)
 
     return render(request, 'product/product_list.html', {
         'grouped_products': dict(grouped_products),
-    })
-def product_detail(request, product_id):
-    product = get_object_or_404(Product, id=product_id, is_available=True)
-    return render(request, 'product/product_detail.html', {
-        'product': product,
-        'MEDIA_URL': settings.MEDIA_URL
-    })
+        'user_wishlist' : list(user_wishlist),
+    })  
+    
+def wishlist_view(request):
+    wishlist_items = Wishlist.objects.filter(user=request.user) if request.user.is_authenticated else []
+    return render(request, 'product/wishlist.html', {'wishlist_items': wishlist_items})
+
+
+@login_required
+def add_to_wishlist(request, product_id):
+    if not request.user.is_authenticated:
+        messages.error(request, "You must be logged in to add to wishlist.")
+        return redirect('login')
+
+    try:
+        product = Product.objects.get(id=product_id)
+        wishlist_item, created = Wishlist.objects.get_or_create(user=request.user, added_product=product)
+
+        if created:
+            messages.success(request, f"{product.name} added to your wishlist.")
+        else:
+            wishlist_item.delete()
+            messages.success(request, f"{product.name} removed from your wishlist.")
+
+    except Product.DoesNotExist:
+        messages.error(request, "Product not found.")
+
+    return redirect(request.META.get('HTTP_REFERER', 'products:products'))

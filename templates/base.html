@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <title> {% block title %} {%endblock%} | Dharr Perfume Store</title>
   <meta charset="utf-8">
+  <meta name="csrf-token" content="{{ csrf_token }}">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <!-- Favicons -->
 
@@ -148,12 +149,11 @@
             </div>
 
             <!-- Wishlist -->
-            <a href="#" class="header-action-btn d-none d-md-flex">
-              <i class="bi bi-heart"></i>
-              <span class="action-text d-none d-md-inline-block">Wishlist</span>
-              <span class="badge">0</span>
-            </a>
-
+             <a href="{% url 'products:wishlist' %}" class="header-action-btn d-none d-md-flex">
+          <i class="bi bi-heart"></i>
+          <span class="action-text d-none d-md-inline-block">Wishlist</span>
+          <span class="badge">{{ request.user.wishlist.products.count|default:"0" }}</span>
+        </a>
             <!-- Cart -->
             <div class="dropdown cart-dropdown">
               <button class="header-action-btn" data-bs-toggle="dropdown">
@@ -969,12 +969,7 @@
             <div class="copyright">
               <p>© <span>Copyright</span> <strong class="sitename">DHARR INCENSE</strong>. All Rights Reserved.</p>
             </div>
-            <div class="credits mt-1">
-              <!-- All the links in the footer should remain intact. -->
-              <!-- You can delete the links only if you've purchased the pro version. -->
-              <!-- Licensing information: https://bootstrapmade.com/license/ -->
-              <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-
+            <div class="credits mt-1"> 
             </div>
           </div>
 

@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
       accountCard.style.display = (accountCard.style.display === 'block') ? 'none' : 'block';
     });
 
-    // Hide card if clicked outside
     document.addEventListener('click', function(e) {
       if (!accountCard.contains(e.target) && !accountLink.contains(e.target)) {
         accountCard.style.display = 'none';
@@ -17,7 +16,36 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Modal logic
+
+    // Quick View Modal
+  const quickViewModal = document.getElementById("quickViewModal");
+  const quickViewImage = document.getElementById("quickViewImage");
+  const quickViewClose = document.getElementById("quickViewClose");
+
+  if (quickViewModal && quickViewImage && quickViewClose) {
+    document.querySelectorAll(".quick-view-btn").forEach(button => {
+      
+      button.addEventListener("click", function (e) {
+        e.preventDefault();
+        const imageUrl = this.getAttribute("data-image-url");
+          quickViewModal.style.display = "block";
+          quickViewImage.src = imageUrl;
+        
+      });
+    });
+
+    quickViewClose.addEventListener("click", () => {
+      quickViewModal.style.display = "none";
+    });
+
+    window.addEventListener("click", (event) => {
+      if (event.target === quickViewModal) {
+        quickViewModal.style.display = "none";
+      }
+    });
+  }
+
+  // Info Modal logic
   const modal = document.getElementById("customModal");
   const modalTitle = document.getElementById("modalProductName");
   const modalDetails = document.getElementById("modalProductDetails");
@@ -29,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
         e.preventDefault();
         const name = this.getAttribute("data-product-name");
         const details = this.getAttribute("data-product-details");
-
+   
         modalTitle.textContent = name;
         modalDetails.textContent = details;
         modal.style.display = "block";
@@ -46,4 +74,16 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-});
+});   
+ // Function to handle the "Add to Cart" button click
+ function addToCart(productId) {
+  // Simulate adding to cart
+  console.log(`Product ${productId} added to cart!`);
+  alert(`Product ${productId} added to cart!`);
+
+}
+
+
+
+
+ 
