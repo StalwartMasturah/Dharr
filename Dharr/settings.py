@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'product.apps.ProductConfig',
     'cart.apps.CartConfig',
-    'about.apps.AboutConfig'
+    'about.apps.AboutConfig',
+    'django.contrib.humanize',
+
 
 ]
 

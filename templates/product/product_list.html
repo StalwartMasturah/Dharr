@@ -36,7 +36,7 @@
                             <img src="{{ product.default_image.url }}" class="img-fluid main-img w-100" alt="{{ product.name }}">
                             <img src="{{ product.default_image.url }}" alt="{{ product.name }} Hover" class="img-fluid hover-img w-100">
                             <div class="product-overlay">
-                               <a href="#" class="btn-cart"> 
+                               <a href="{% url 'cart:add_to_cart' product.id %}" class="btn-cart"> 
                                 <i class="bi bi-cart-plus"></i> Add to Cart
                               </a> 
                               <div class="product-actions">

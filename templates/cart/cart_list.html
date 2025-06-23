@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
+{% load humanize %}
 {% load static %}
 {% block title %}Your Cart{% endblock %}
-
 {% block css %}
 <link href="{% static 'CSS/style.css' %}" rel="stylesheet">
 {% endblock %}
-
 {% block content %}
 <main class="main">
   <div class="page-title light-background">
@@ -19,7 +18,6 @@
       <h1>Your Cart</h1>
     </div>
   </div>
-
   <div class="container mt-5">
     {% if cart_items %}
       <table class="table table-bordered align-middle text-center">
@@ -33,26 +31,52 @@
           </tr>
         </thead>
         <tbody>
-          {% for item in cart_items %}
-          <tr>
-            <td style="width: 100px;">
-              <img src="{{ item.product.default_image.url }}" alt="{{ item.product.name }}" class="img-fluid" style="height: 60px;">
-            </td>
-            <td>{{ item.product.name }}</td>
-            <td>₦{{ item.product.price }}</td>
-            <td>{{ item.quantity }}</td>
-            <td><strong>₦{{ item.total_price }}</strong></td>
-          </tr>
-          {% endfor %}
-          <tr>
-            <td colspan="4" class="text-end"><strong>Grand Total:</strong></td>
-            <td><strong>₦{{ grand_total }}</strong></td>
-          </tr>
-        </tbody>
-      </table>
+  {% for item in cart_items %}
+  <tr>
+    <td style="width: 100px;">
+      <img src="{{ item.product.default_image.url }}" alt="{{ item.product.name }}" class="img-fluid" style="height: 60px;">
+    </td>
+    <td>{{ item.product.name }}</td>
+    <td>₦{{ item.product.price }}</td>
+    <!-- Quantity Controls -->
+    <td>
+      <form method="post" action="{% url 'cart:update_quantity' item.id %}" style="display: inline;">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="decrement">
+        <button type="submit" class="btn btn-sm btn-outline-secondary">-</button>
+      </form>
+      <span class="mx-2">{{ item.quantity }}</span>
+      <form method="post" action="{% url 'cart:update_quantity' item.id %}" style="display: inline;">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="increment">
+        <button type="submit" class="btn btn-sm btn-outline-secondary">+</button>
+      </form>
+    </td>
+    <!-- Total & Remove -->
+    <td>
+      <div><strong>₦{{ item.total_price|intcomma }}</strong></div>
+      <form method="post" action="{% url 'cart:remove_from_cart' item.id %}" style="margin-top: 10px;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-brand color">Remove</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+  <!-- Grand Total -->
+  <tr>
+    <td colspan="4" class="text-end"><strong>Grand Total:</strong></td>
+    <td><strong>₦{{ grand_total }}</strong></td>
+  </tr>
+</tbody>
+       </table>
+    <!-- Checkout Button -->
+      <div class="text-end">
+        <a href="#" class="btn btn-brand color">Proceed to Checkout</a>
+      </div>
+      <br><br>
     {% else %}
-      <p class="text-center">Your cart is empty.</p>
+      <p class="text-center">Your cart is empty. <a href="{% url 'about:home' %}">Continue Shopping</a></p>
     {% endif %}
-  </div>
+       </div>
 </main>
 {% endblock %}

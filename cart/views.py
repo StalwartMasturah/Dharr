@@ -1,66 +1,48 @@
-from django.shortcuts import redirect,render, get_object_or_404
+from django.views.decorators.http import require_POST
+from django.shortcuts import redirect,render,get_object_or_404
 from product.models import Product
+from django.contrib.auth.decorators import login_required
+from.models import Cart
 
 # Create your views here.
-def add_to_cart(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    cart = request.session.get('cart', {})
 
-    if str(product_id) in cart:
-        cart[str(product_id)] += 1
-    else:
-        cart[str(product_id)] = 1
+def view_cart(request):
+    cart_items = Cart.objects.filter(user=request.user)
+    total_price = sum(item.product.price * item.quantity for item in cart_items)
 
-    request.session['cart'] = cart
-    return redirect(request.META.get('HTTP_REFERER', '/'))
- 
-def remove_from_cart(request, product_id):
-    cart = request.session.get('cart', {})
-    
-    if str(product_id) in cart:
-        del cart[str(product_id)]
-        request.session['cart'] = cart
-    
-    return redirect(request.META.get('HTTP_REFERER', '/'))
+    grand_total = sum(item.total_price for item in cart_items)
 
-def cart_list(request):
-    cart = request.session.get('cart', {})  # Format: {product_id: quantity}
-    cart_items = []
-    total_price = 0
-
-    for product_id, quantity in cart.items():
-        try:
-            product = Product.objects.get(id=product_id)
-            item_total = product.price * quantity
-            total_price += item_total
-
-            cart_items.append({
-                'product': product,
-                'quantity': quantity,
-                'item_total': item_total,
-            })
-        except Product.DoesNotExist:
-            continue  # Skip if product doesn't exist
-
-    context = {
+    return render(request, 'cart/cart_list.html', {
         'cart_items': cart_items,
         'total_price': total_price,
-    }
-    return render(request, 'cart/cart_list.html', context)
+        'grand_total': grand_total
+    })
 
-def update_quantity(request, item_id):
-    if request.method == 'POST':
-        action = request.POST.get('action')
-        quantity = int(request.POST.get('quantity', 1))
-        cart = request.session.get('cart', {})
+def add_to_cart(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    cart_item, created = Cart.objects.get_or_create(
+        user=request.user,
+        product=product)
+    if not created:
+        cart_item.quantity += 1
+    cart_item.save()
+    return redirect('cart:view_cart')   
+ 
+@require_POST
+def update_quantity(request, cart_id):
+    action = request.POST.get('action')
+    cart_item = get_object_or_404(Cart, id=cart_id, user=request.user)
 
-        if str(item_id) in cart:
-            if action == 'increase':
-                cart[str(item_id)] = cart.get(str(item_id), 1) + 1
-            elif action == 'decrease' and cart[str(item_id)] > 1:
-                cart[str(item_id)] -= 1
-            elif quantity > 0:
-                cart[str(item_id)] = quantity
+    if action == 'increment':
+        cart_item.quantity += 1
+    elif action == 'decrement' and cart_item.quantity > 1:
+        cart_item.quantity -= 1
 
-        request.session['cart'] = cart
-    return redirect('cart:cart_list')
+    cart_item.save()
+    return redirect('cart:view_cart')
+
+@require_POST
+def remove_from_cart(request, cart_id):
+    cart_item = get_object_or_404(Cart, id=cart_id, user=request.user)
+    cart_item.delete()
+    return redirect('cart:view_cart')

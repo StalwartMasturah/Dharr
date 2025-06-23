@@ -42,7 +42,7 @@ def all_product_list(request):
     #     grouped_products[product.category.name].append(product)
         
     page = request.GET.get('page', 1)
-    paginator = Paginator(products, 3)
+    paginator = Paginator(products, 4)
     
     try:
         top_products = paginator.page(page)
