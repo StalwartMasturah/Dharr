@@ -36,7 +36,9 @@ def all_product_list(request):
     # grouped_products = defaultdict(list)
 
     # get users wishlist
-    user_wishlist = Wishlist.objects.filter(user=request.user).values_list('added_product_id', flat=True)
+    user_wishlist =[] 
+    if request.user.is_authenticated:
+        user_wishlist = Wishlist.objects.filter(user=request.user).values_list('added_product_id', flat=True)
 
     # for product in products:
     #     grouped_products[product.category.name].append(product)
@@ -50,8 +52,13 @@ def all_product_list(request):
         prev_page = int(page) - 1
     except PageNotAnInteger:
         top_products = paginator.page(1)
+        next_page = 2
+        prev_page = 1
+        
     except EmptyPage:
         top_products = paginator.page(paginator.num_pages)
+        next_page = paginator.num_pages 
+        prev_page = paginator.num_pages - 1
 
     return render(request, 'product/all_product_list.html', {
         'products': top_products,
@@ -64,8 +71,11 @@ def product_list(request):
     products = Product.objects.select_related('category')
     grouped_products = defaultdict(list)
     # get users wishlist
-    user_wishlist = Wishlist.objects.filter(user=request.user).values_list('added_product_id', flat=True)
-
+    user_wishlist = [] 
+    if request.user.is_authenticated:
+        user_wishlist = Wishlist.objects.filter(user=request.user).values_list('added_product_id', flat=True)
+            # get the ids of products in the user's wishlist
+     
     for product in products:
         grouped_products[product.category.name].append(product)
 
