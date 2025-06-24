@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load humanize %}
 {% load static %}
 {% block title %}Your Cart{% endblock %}
 {% block css %}
@@ -54,7 +53,7 @@
     </td>
     <!-- Total & Remove -->
     <td>
-      <div><strong>₦{{ item.total_price|intcomma }}</strong></div>
+      <div><strong>₦{{ item.total_price }}</strong></div>
       <form method="post" action="{% url 'cart:remove_from_cart' item.id %}" style="margin-top: 10px;">
         {% csrf_token %}
         <button type="submit" class="btn btn-brand color">Remove</button>

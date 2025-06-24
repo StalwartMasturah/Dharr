@@ -43,8 +43,7 @@ INSTALLED_APPS = [
     'product.apps.ProductConfig',
     'cart.apps.CartConfig',
     'about.apps.AboutConfig',
-    'django.contrib.humanize',
-
+ 
 
 ]
 
