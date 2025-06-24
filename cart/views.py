@@ -17,7 +17,7 @@ def view_cart(request):
         'total_price': total_price,
         'grand_total': grand_total
     })
-
+@login_required
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     cart_item, created = Cart.objects.get_or_create(
