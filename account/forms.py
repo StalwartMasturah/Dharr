@@ -3,11 +3,11 @@ from django.contrib.auth.models import User
 
  
 class RegisterForm(forms.ModelForm):
-    first_name = forms.CharField(max_length=30, required=True, label="First Name")
-    last_name = forms.CharField(max_length=30, required=True, label="Last Name")
-    email = forms.EmailField(max_length=254, help_text='Required. Enter a valid email address.')
-    password = forms.CharField(widget=forms.PasswordInput)
-    password_confirm = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
+    first_name = forms.CharField(max_length=30, required=True, label="First Name",placeholder="First Name")
+    last_name = forms.CharField(max_length=30, required=True, label="Last Name" ,placeholder="Last Name")
+    email = forms.EmailField(max_length=254, help_text='Required. Enter a valid email address.',label="Email",placeholder="Email")
+    password = forms.CharField(widget=forms.PasswordInput, label="Password", placeholder="Password")
+    password_confirm = forms.CharField(widget=forms.PasswordInput, label="Confirm Password", placeholder="Confirm Password")
 
     class Meta:
         model = User
