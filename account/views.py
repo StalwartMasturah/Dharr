@@ -12,14 +12,36 @@ from django.views import View
 from django.contrib.auth.models import User
 # import the RegisterForm from forms.py
 from .forms import RegisterForm
+from django import forms
+
+# Register View
 
 def register_view(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = User.objects.create_user(username=username, password=password)
+            # Extract form data
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            password_confirm = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+
+            # Create user
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password,
+                password_confirm=password_confirm,
+                first_name=first_name,
+                last_name=last_name
+            )
+            user.first_name = first_name
+            user.last_name = last_name
+            user.save()
+
+            # Log the user in and redirect
             login(request, user)
             return redirect("home")
     else:
@@ -27,6 +49,8 @@ def register_view(request):
 
     return render(request, "accounts/register.html", {'form': form})
 
+# Login View
+# This view handles both GET and POST requests for user login.
 def login_view(request):
     if request.method == "POST":
         username = request.POST.get("username")
