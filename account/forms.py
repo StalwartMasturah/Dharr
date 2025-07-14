@@ -3,15 +3,14 @@ from django.contrib.auth.models import User
 
  
 class RegisterForm(forms.ModelForm):
-    first_name = forms.CharField(max_length=30, required=True, label="First Name",placeholder="First Name")
-    last_name = forms.CharField(max_length=30, required=True, label="Last Name" ,placeholder="Last Name")
-    email = forms.EmailField(max_length=254, help_text='Required. Enter a valid email address.',label="Email",placeholder="Email")
-    password = forms.CharField(widget=forms.PasswordInput, label="Password", placeholder="Password")
-    password_confirm = forms.CharField(widget=forms.PasswordInput, label="Confirm Password", placeholder="Confirm Password")
+    name = forms.CharField(max_length=150, required=True,widget=forms.TextInput(attrs={'placeholder': 'FullName'}))
+    email = forms.EmailField(max_length=254,required=True,widget=forms.EmailInput(attrs={'placeholder': 'Email','required': 'required'}))
+    password = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Password', 'type': 'password'}))
+    password_confirm = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Confirm Password'}))
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'password', 'password_confirm']
+        fields = ['name','email', 'password', 'password_confirm']
 
      
     def clean(self):

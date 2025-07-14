@@ -12,7 +12,17 @@
         <h1>Register</h1>
         <form method="POST" action="{% url 'register' %}">
             {% csrf_token %}
-            {{ form.as_p }}
+                {% for field in form %}
+        <p>
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.errors %}
+                <small style="color: red;">{{ field.errors|striptags }}</small>
+            {% endif %}
+        </p>
+    {% endfor %}
+
+ 
             <button type="submit">Register</button>
         </form>
         <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>

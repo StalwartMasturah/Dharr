@@ -13,43 +13,38 @@ from django.contrib.auth.models import User
 # import the RegisterForm from forms.py
 from .forms import RegisterForm
 from django import forms
+from django.contrib import messages
 
-# Register View
-
+# Register View 
 def register_view(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
-            # Extract form data
-            username = form.cleaned_data['username']
+            name = form.cleaned_data['name']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            password_confirm = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
+
+            # Check if username (name) already exists
+            if User.objects.filter(username=name).exists():
+                messages.error(request, "This name is already taken. Please choose another.")
+                return render(request, "accounts/register.html", {'form': form})
 
             # Create user
             user = User.objects.create_user(
-                username=username,
+                username=name,
                 email=email,
-                password=password,
-                password_confirm=password_confirm,
-                first_name=first_name,
-                last_name=last_name
+                password=password
             )
-            user.first_name = first_name
-            user.last_name = last_name
             user.save()
 
-            # Log the user in and redirect
             login(request, user)
-            return redirect("home")
+            return redirect("about:home")
     else:
         form = RegisterForm()
 
     return render(request, "accounts/register.html", {'form': form})
 
-# Login View
+ # Login View
 # This view handles both GET and POST requests for user login.
 def login_view(request):
     if request.method == "POST":
