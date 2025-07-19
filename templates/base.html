@@ -152,7 +152,8 @@
              <a href="{% url 'products:wishlist' %}" class="header-action-btn d-none d-md-flex">
           <i class="bi bi-heart"></i>
           <span class="action-text d-none d-md-inline-block">Wishlist</span>
-          <span class="badge">{{ request.user.wishlist.products.count|default:"0" }}</span>
+          <span class="badge">{{ wishlist_count }}</span>
+          {% comment %} <span class="badge">{{ request.user.wishlist.added_products.count|default:"0" }}</span> {% endcomment %}
         </a>
             <!-- Cart -->
             <div class="dropdown cart-dropdown">

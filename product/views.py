@@ -2,11 +2,11 @@ from django.shortcuts import render, get_object_or_404
 from .models import Product, Category, subCategory,Wishlist
 from django.conf import settings
 from collections import defaultdict 
-from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger 
+
 
 # Create your views here.
 def product_list(request):
@@ -30,6 +30,8 @@ def products_by_subcategory(request, subcategory_id):
     })
     
 def all_product_list(request):
+    wishlist_count = Wishlist.objects.filter(user=request.user).count if request.user.is_authenticated else 0
+
     #add pagination
     categories = Category.objects.all()
     products = Product.objects.all().order_by('-category')
@@ -63,7 +65,8 @@ def all_product_list(request):
     return render(request, 'product/all_product_list.html', {
         'products': top_products,
         'user_wishlist' : list(user_wishlist),
-        'next_page': next_page, 'prev_page': prev_page
+        'next_page': next_page, 'prev_page': prev_page,
+        'wishlist_count': wishlist_count,
     })
     
     
@@ -78,15 +81,21 @@ def product_list(request):
      
     for product in products:
         grouped_products[product.category.name].append(product)
+        
+        
+    wishlist_count = user_wishlist.count()
 
     return render(request, 'product/product_list.html', {
         'grouped_products': dict(grouped_products),
         'user_wishlist' : list(user_wishlist),
+        'wishlist_count': wishlist_count,
     })  
     
 def wishlist_view(request):
     wishlist_items = Wishlist.objects.filter(user=request.user) if request.user.is_authenticated else []
-    return render(request, 'product/wishlist.html', {'wishlist_items': wishlist_items})
+    print(wishlist_items) 
+    wishlist_count = wishlist_items.count()
+    return render(request, 'product/wishlist.html', {'wishlist_items': wishlist_items, 'wishlist_count': wishlist_count})
 
 
 @login_required
