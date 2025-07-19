@@ -6,7 +6,7 @@ class RegisterForm(forms.ModelForm):
     name = forms.CharField(max_length=150, required=True,widget=forms.TextInput(attrs={'placeholder': 'FullName'}))
     email = forms.EmailField(max_length=254,required=True,widget=forms.EmailInput(attrs={'placeholder': 'Email','required': 'required'}))
     password = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Password', 'type': 'password'}))
-    password_confirm = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Confirm Password'}))
+    password_confirm = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Confirm Password','type':'password'}))
 
     class Meta:
         model = User
