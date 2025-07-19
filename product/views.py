@@ -74,17 +74,15 @@ def product_list(request):
     products = Product.objects.select_related('category')
     grouped_products = defaultdict(list)
     # get users wishlist
-    user_wishlist = [] 
+    user_wishlist = []
+    wishlist_count = 0
     if request.user.is_authenticated:
         user_wishlist = Wishlist.objects.filter(user=request.user).values_list('added_product_id', flat=True)
-            # get the ids of products in the user's wishlist
+        wishlist_count = user_wishlist.count()
      
     for product in products:
         grouped_products[product.category.name].append(product)
         
-        
-    wishlist_count = user_wishlist.count()
-
     return render(request, 'product/product_list.html', {
         'grouped_products': dict(grouped_products),
         'user_wishlist' : list(user_wishlist),
