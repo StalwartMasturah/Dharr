@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Your Cart{% endblock %}
+{% block css %}
+<link href="{% static 'CSS/style.css' %}" rel="stylesheet">
+<script src="https://js.oneappgo.com/v1/checkout.js"> </script>
+{% endblock %}
+{% block content %}
+ <main class="main">
+  <div class="page-title light-background">
+    <div class="container">
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="{% url 'about:home' %}">Home</a></li>
+          <li class="current">Checkout</li>
+        </ol>
+      </nav>
+
+        <div class="container text-center mt-5">
+
+    <h2>Proceed to Payment</h2>
+    <p class="mb-4">You’re about to pay <strong>₦{{ grand_total }}</strong></p>
+       <button type="submit" onclick="makePayment()" class="btn btn-brand color">Pay Now</button>
+ 
+    <script>
+      function hideReference(length = 8) {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                let result = '';
+                for (let i = 0; i < length; i++) {
+                    result += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return result;
+            }
+   function makePayment() {
+const initpay = new OneAppCheckout({
+      publickey: "1apptest_pb_dd7e09420d59f22be6a584364b2b66ba", //replace with your public key
+      amount: {{ grand_total }},
+      fname: "John",
+      lname: "Doe",
+      customer_email: "johndoes@example.cm",
+      phone: "09012345678",
+      reference: hideReference(),
+      currency: "NGN",    
+
+      onComplete:async (response) => {
+        //loading.value = false
+        if((response.status) && (response.responsecode == '01')){
+          var dref = response.reference;
+          var token = response.token;
+          var initiate_ref = response.initiate_ref;
+          successCallback(initiate_ref, token, dref, demail);
+        }else{
+          alert(response.message)
+        }
+      }
+  });
+  
+
+  initpay.makePayment()   //inittiate the payment
+}
+      
+</script>
+
+     
+    <br><br>
+    <a href="{% url 'cart:view_cart' %}">← Back to Cart</a>
+
+  </div>
+
+    </div>
+  </div> 
+</main>
+{% endblock %}

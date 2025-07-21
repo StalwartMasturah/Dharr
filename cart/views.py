@@ -46,3 +46,30 @@ def remove_from_cart(request, cart_id):
     cart_item = get_object_or_404(Cart, id=cart_id, user=request.user)
     cart_item.delete()
     return redirect('cart:view_cart')
+
+from django.shortcuts import render
+
+def checkout_view(request):
+    return render(request, 'cart/checkout.html')
+from django.shortcuts import render
+@login_required
+
+def checkout(request):
+    if request.user.is_authenticated:
+        cart_items = Cart.objects.filter(user=request.user)
+    else:
+        session_key = request.session.session_key
+        if not session_key:
+            request.session.create()
+            session_key = request.session.session_key
+        cart_items = Cart.objects.filter(session_key=session_key)
+
+    grand_total = sum(item.total_price for item in cart_items)
+
+    return render(request, 'cart/checkout.html', {
+        'cart_items': cart_items,
+        'grand_total': grand_total
+    })
+
+def process_payment(request):
+    return render(request, 'cart/payment_success.html')  

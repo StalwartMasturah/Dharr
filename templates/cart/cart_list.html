@@ -70,7 +70,7 @@
        </table>
     <!-- Checkout Button -->
       <div class="text-end">
-        <a href="#" class="btn btn-brand color">Proceed to Checkout</a>
+        <a href="{% url 'cart:checkout' %}" class="btn btn-brand color">Proceed to Checkout</a>
       </div>
       <br><br>
     {% else %}
