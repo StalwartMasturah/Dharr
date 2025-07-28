@@ -60,7 +60,7 @@ def login_view(request):
             return render(request, 'accounts/login.html', {'error': error_message})
     
     # Handle GET requests (i.e., first time loading the page)
-    return render(request, 'accounts/login.html')
+    return render(request, 'about:home')
 
 def logout_view(request):
     if request.method == "POST":

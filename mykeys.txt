@@ -1,2 +1,6 @@
 secret key: 1apptest_sk_7c05e3130d74415eff32a149ac479139
 public key: 1apptest_pb_dd7e09420d59f22be6a584364b2b66ba
+
+How to hide my API Key
+
+ 

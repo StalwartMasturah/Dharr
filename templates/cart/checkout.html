@@ -19,7 +19,7 @@
         <div class="container text-center mt-5">
 
     <h2>Proceed to Payment</h2>
-    <p class="mb-4">You’re about to pay <strong>₦{{ grand_total }}</strong></p>
+    <p class="mb-4">You’re about to pay <strong>₦{{ grand_total }} {{user.name}}</strong></p>
        <button type="submit" onclick="makePayment()" class="btn btn-brand color">Pay Now</button>
  
     <script>
@@ -36,7 +36,7 @@ const initpay = new OneAppCheckout({
       publickey: "1apptest_pb_dd7e09420d59f22be6a584364b2b66ba", //replace with your public key
       amount: {{ grand_total }},
       fname: "John",
-      lname: "Doe",
+      lname: "dharr",
       customer_email: "johndoes@example.cm",
       phone: "09012345678",
       reference: hideReference(),
