@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from.models import Cart
 
 # Create your views here.
-
+@login_required(login_url='/account/login/')  # redirect to login if not authenticated
 def view_cart(request):
     cart_items = Cart.objects.filter(user=request.user)
     total_price = sum(item.product.price * item.quantity for item in cart_items)
@@ -17,6 +17,7 @@ def view_cart(request):
         'total_price': total_price,
         'grand_total': grand_total
     })
+    
 @login_required
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
