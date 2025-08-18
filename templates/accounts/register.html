@@ -20,6 +20,22 @@
                 <small style="color: red;">{{ field.errors|striptags }}</small>
             {% endif %}
         </p>
+
+        {% if form.errors %}
+    <div style="color: red;">
+        <ul>
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li>{{ field.label }}: {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+      {% endif %}
+
     {% endfor %}
             <button type="submit">Register</button>
         </form>

@@ -24,9 +24,8 @@ def register_view(request):
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
 
-            # Check if username (name) already exists
             if User.objects.filter(username=name).exists():
-                messages.error(request, "This name is already taken. Please choose another.")
+                messages.error(request, "This name is already taken.")
                 return render(request, "accounts/register.html", {'form': form})
 
             # Create user
@@ -37,15 +36,67 @@ def register_view(request):
             )
             user.save()
 
+            # Log the user in
             login(request, user)
-            return redirect("about:home")
+
+            # Show a success popup message
+            messages.success(
+                request,
+                f" Welcome {user.username}! You have successfully registered on Dharr Incense Perfume Store."
+                f" Your one stop shop for all your fragrance needs!✨"
+
+            )
+
+            return redirect("about:home") 
+        else:
+            print(form.errors)
     else:
         form = RegisterForm()
 
     return render(request, "accounts/register.html", {'form': form})
 
- # Login View
+# def register_view(request):
+#     if request.method == "POST":
+#         print("POST received")
+#         form = RegisterForm(request.POST)
+#         if form.is_valid():
+#             print("Form is valid")
+#             name = form.cleaned_data['name']
+#             email = form.cleaned_data['email']
+#             password = form.cleaned_data['password']
+
+#             if User.objects.filter(username=name).exists():
+#                 print("Username already exists")
+#                 messages.error(request, "This name is already taken.")
+#                 return render(request, "accounts/register.html", {'form': form})
+
+#             print("Creating new user")
+#             user = User.objects.create_user(
+#                 username=name,
+#                 email=email,
+#                 password=password
+#             )
+#             user.save()
+
+#             login(request, user)
+#             print("Redirecting to about:home")
+#             return redirect("about:home")
+
+#         else:
+#             print("Form is not valid:")
+#             print(form.errors)  # <-- This is critical
+#     else:
+#         print("GET request")
+#         form = RegisterForm()
+
+#     return render(request, "accounts/register.html", {'form': form})
+
+# Login View
 # This view handles both GET and POST requests for user login.
+
+
+from django.contrib import messages
+
 def login_view(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -53,14 +104,29 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            next_url = request.POST.get('next') or request.GET.get('next') or 'home'
-            return redirect(next_url)
+            messages.success(request, f"Welcome, {user.username} 👋 You are logged in successfully.")
+            return redirect("about:home")  # redirect to your main home
         else:
             error_message = "Invalid Credentials!"
             return render(request, 'accounts/login.html', {'error': error_message})
     
-    # Handle GET requests (i.e., first time loading the page)
-    return render(request, 'about:home')
+    return render(request, 'accounts/login.html')
+
+# def login_view(request):
+#     if request.method == "POST":
+#         username = request.POST.get("username")
+#         password = request.POST.get("password")
+#         user = authenticate(request, username=username, password=password)
+#         if user is not None:
+#             login(request, user)
+#             next_url = request.POST.get('next') or request.GET.get('next') or 'home'
+#             return redirect(next_url)
+#         else:
+#             error_message = "Invalid Credentials!"
+#             return render(request, 'accounts/login.html', {'error': error_message})
+    
+#     # Handle GET requests (i.e., first time loading the page)
+#     return render(request, 'accounts/login.html')
 
 def logout_view(request):
     if request.method == "POST":
@@ -70,11 +136,12 @@ def logout_view(request):
         return redirect('home')
     
 # Home View
-# UIng the decorator
+# Using the decorator
 @login_required
 def home_view(request):
-    return render(request, 'auth1_app/home.html')
+    return redirect("about:home")
 
+ 
 #Protected view 
 class ProtectedView(LoginRequiredMixin, View):
     login_url = '/login/'

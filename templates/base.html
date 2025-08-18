@@ -109,45 +109,77 @@
               <i class="bi bi-search"></i>
             </button>
 
-            <!-- Account -->
-            <div class="dropdown account-dropdown">
-              <button class="header-action-btn" data-bs-toggle="dropdown">
-                <i class="bi bi-person"></i>
-                <span class="action-text d-none d-md-inline-block">Account</span>
-              </button>
-              <div class="dropdown-menu">
-                <div class="dropdown-header">
-                  <h6>Welcome to <span class="sitename">DHARR INCENSE</span></h6>
-                  <p class="mb-0">Access account &amp; manage orders</p>
-                </div>
-                <div class="dropdown-body">
-                  <a class="dropdown-item d-flex align-items-center" href="#">
-                    <i class="bi bi-person-circle me-2"></i>
-                    <span>My Profile</span>
-                  </a>
-                  <a class="dropdown-item d-flex align-items-center" href="#">
-                    <i class="bi bi-bag-check me-2"></i>
-                    <span>My Orders</span>
-                  </a>
-                  <a class="dropdown-item d-flex align-items-center" href="#">
-                    <i class="bi bi-heart me-2"></i>
-                    <span>My Wishlist</span>
-                  </a>
-                  <!--<a class="dropdown-item d-flex align-items-center" href="returns.html">
-                    <i class="bi bi-arrow-return-left me-2"></i>
-                    <span>Returns &amp; Refunds</span>-->
-                  <a class="dropdown-item d-flex align-items-center" href="#">
-                    <i class="bi bi-gear me-2"></i>
-                    <span>Settings</span>
-                  </a>
-                </div>
-                <div class="dropdown-footer">
-                  <a href="#" class="btn btn-primary w-100 mb-2">Sign In</a>
-                  <a href="#" class="btn btn-outline-primary w-100">Register</a>
-                </div>
-              </div>
-            </div>
-
+  <!-- Account -->
+  <div class="dropdown account-dropdown">
+  <button class="header-action-btn" data-bs-toggle="dropdown">
+    <i class="bi bi-person"></i>
+    <span class="action-text d-none d-md-inline-block">Account</span>
+  </button>
+  <div class="dropdown-menu">
+    
+    {% if user.is_authenticated %}
+      <!-- Show this if user is logged in -->
+      <div class="dropdown-header">
+        <h6>Welcome, <span class="sitename">{{ user.username }}</span> 👋</h6>
+        <p class="mb-0">Manage your account & orders</p>
+      </div>
+      <div class="dropdown-body">
+        <a class="dropdown-item d-flex align-items-center" href="#">
+          <i class="bi bi-person-circle me-2"></i>
+          <span>My Profile</span>
+        </a>
+        <a class="dropdown-item d-flex align-items-center" href="#">
+          <i class="bi bi-bag-check me-2"></i>
+          <span>My Orders</span>
+        </a>
+        <a class="dropdown-item d-flex align-items-center" href="#">
+          <i class="bi bi-heart me-2"></i>
+          <span>My Wishlist</span>
+        </a>
+        <a class="dropdown-item d-flex align-items-center" href="#">
+          <i class="bi bi-gear me-2"></i>
+          <span>Settings</span>
+        </a>
+      </div>
+      <div class="dropdown-footer">
+        <form method="post" action="#">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger w-100">Log Out</button>
+        </form>
+      </div>
+    
+    {% else %}
+      <!-- Show this if user is NOT logged in -->
+      <div class="dropdown-header">
+        <h6>Welcome to <span class="sitename">DHARR INCENSE</span></h6>
+        <p class="mb-0">Access account &amp; manage orders</p>
+      </div>
+      <div class="dropdown-body">
+        <a class="dropdown-item d-flex align-items-center" href="#">
+          <i class="bi bi-person-circle me-2"></i>
+          <span>My Profile</span>
+        </a>
+        <a class="dropdown-item d-flex align-items-center" href="#">
+          <i class="bi bi-bag-check me-2"></i>
+          <span>My Orders</span>
+        </a>
+        <a class="dropdown-item d-flex align-items-center" href="#">
+          <i class="bi bi-heart me-2"></i>
+          <span>My Wishlist</span>
+        </a>
+        <a class="dropdown-item d-flex align-items-center" href="#">
+          <i class="bi bi-gear me-2"></i>
+          <span>Settings</span>
+        </a>
+      </div>
+      <div class="dropdown-footer">
+        <a href="#" class="btn btn-primary w-100 mb-2">Sign In</a>
+        <a href="#" class="btn btn-outline-primary w-100">Register</a>
+      </div>
+    {% endif %}
+    
+     </div>
+      </div>
             <!-- Wishlist -->
              <a href="{% url 'products:wishlist' %}" class="header-action-btn d-none d-md-flex">
           <i class="bi bi-heart"></i>
@@ -201,7 +233,7 @@
             <!--<li><a href="product-details.html">Product Details</a></li> -->
             <li><a href="/products/products">Products</a></li>
             <li><a href="{% url 'cart:view_cart' %}">Cart</a></li>
-            <li><a href="#">Checkout</a></li>
+            {% comment %} <li><a href="#">Checkout</a></li> {% endcomment %}
             <li class="dropdown"><a href="#"><span>Quick Shop</span> <i
                   class="bi bi-chevron-down toggle-dropdown"></i></a>
               <ul>
@@ -220,284 +252,7 @@
                 <li><a href="#">Limited Editions</a></li>
               </ul>
             </li>
-
-            <!-- Products Mega Menu 1 -->
-            <li class="products-megamenu-1"><a href="#"><span>Fragrances</span> <i
-                  class="bi bi-chevron-down toggle-dropdown"></i></a>
-
-              <!-- Products Mega Menu 1 Mobile View -->
-              <ul class="mobile-megamenu">
-
-                <li><a href="#">Feature</a></li>
-                <li><a href="#">New Arrivals</a></li>
-                <li><a href="#">Sale Items</a></li>
-
-                <li class="dropdown"><a href="#"><span>Perfumes</span> <i
-                      class="bi bi-chevron-down toggle-dropdown"></i></a>
-                  <ul>
-                    <li><a href="#">All Perfumes</a></li>
-                    <li><a href="#">Perfumes for Women</a></li>
-                    <li><a href="#">Perfume foe Men</a></li>
-                    <li><a href="#">Perfume Oils</a></li>
-                    <li><a href="#">Unisex Scents</a></li>
-                  </ul>
-                </li>
-
-                <li class="dropdown"><a href="#"><span>Self-Care Essentials</span> <i
-                      class="bi bi-chevron-down toggle-dropdown"></i></a>
-                  <ul>
-                    <li><a href="#">Body Oils</a></li>
-                    <li><a href="#">Hair and Beard Care</a></li>
-                    <li><a href="#">Skin & Hair Care </a></li>
-                    <li><a href="#">Aromatherapy</a></li>
-                    <li><a href="#">Self-Care Kit</a></li>
-                  </ul>
-                </li>
-
-                <li class="dropdown"><a href="#"><span>Home &amp; Thoughtful Gifting</span> <i
-                      class="bi bi-chevron-down toggle-dropdown"></i></a>
-                  <ul>
-                    <li><a href="#">Gift Set</a></li>
-                    <li><a href="#">Scented Candles</a></li>
-                    <li><a href="#">Minimalist Keepsakes</a></li>
-                    <li><a href="#">Under &#8358;10,000</a></li>
-                    <li><a href="#">Celebration Boxes</a></li>
-                  </ul>
-                </li>
-                <li class="dropdown"><a href="#"><span>Explore Dharr</span> <i
-                      class="bi bi-chevron-down toggle-dropdown"></i></a>
-                  <ul>
-                    <li><a href="#">DHARR Exclusives</a></li>
-                    <li><a href="#">Scent Quiz</a></li>
-                    <li><a href="#">Blog</a></li>
-                  </ul>
-                </li>
-              </ul><!-- End Products Mega Menu 1 Mobile View -->
-
-              <!-- Products Mega Menu 1 Desktop View -->
-              <div class="desktop-megamenu">
-
-                <div class="megamenu-tabs">
-                  <ul class="nav nav-tabs" id="productMegaMenuTabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                      <button class="nav-link active" id="featured-tab" data-bs-toggle="tab"
-                        data-bs-target="#featured-content-1862" type="button" aria-selected="true"
-                        role="tab">Featured</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="new-tab" data-bs-toggle="tab" data-bs-target="#new-content-1862"
-                        type="button" aria-selected="false" tabindex="-1" role="tab">New Arrivals</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="sale-tab" data-bs-toggle="tab" data-bs-target="#sale-content-1862"
-                        type="button" aria-selected="false" tabindex="-1" role="tab">Sale</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="category-tab" data-bs-toggle="tab"
-                        data-bs-target="#category-content-1862" type="button" aria-selected="false" tabindex="-1"
-                        role="tab">Categories</button>
-                    </li>
-                  </ul>
-                </div>
-
-                <!-- Tabs Content -->
-                <div class="megamenu-content tab-content">
-
-                  <!-- Featured Tab -->
-                  <div class="tab-pane fade show active" id="featured-content-1862" role="tabpanel"
-                    aria-labelledby="featured-tab">
-                    <div class="product-grid">
-                      <div class="product-card">
-                        <div class="product-image">
-                          <img src="assets/img/product/product-1.webp" alt="Featured Product" loading="lazy">
-                        </div>
-                        <div class="product-info">
-                          {% comment %} <h5>Premium Headphones</h5> {% endcomment %}
-                          {% comment %} <p class="price">$129.99</p> {% endcomment %}
-                          <a href="#" class="btn-view">View Product</a>
-                        </div>
-                      </div>
-                      <div class="product-card">
-                        <div class="product-image">
-                          <img src="assets/img/product/product-2.webp" alt="Featured Product" loading="lazy">
-                        </div>
-                        <div class="product-info">
-                          {% comment %} <h5>Smart Watch</h5> {% endcomment %}
-                          {% comment %} <p class="price">$199.99</p> {% endcomment %}
-                          <a href="#" class="btn-view">View Product</a>
-                        </div>
-                      </div>
-                      <div class="product-card">
-                        <div class="product-image">
-                          <img src="assets/img/product/product-3.webp" alt="Featured Product" loading="lazy">
-                        </div>
-                        <div class="product-info">
-                          {% comment %} <h5>Wireless Earbuds</h5> {% endcomment %}
-                          {% comment %} <p class="price">$89.99</p> {% endcomment %}
-                          <a href="#" class="btn-view">View Product</a>
-                        </div>
-                      </div>
-                      <div class="product-card">
-                        <div class="product-image">
-                          <img src="assets/img/product/product-4.webp" alt="Featured Product" loading="lazy">
-                        </div>
-                        <div class="product-info">
-                          {% comment %} <h5>Bluetooth Speaker</h5> {% endcomment %}
-                          {% comment %} <p class="price">$79.99</p> {% endcomment %}
-                          <a href="#" class="btn-view">View Product</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- New Arrivals Tab -->
-                  <div class="tab-pane fade" id="new-content-1862" role="tabpanel" aria-labelledby="new-tab">
-                    <div class="product-grid">
-                      <div class="product-card">
-                        <div class="product-image">
-                          <img src="assets/img/product/product-5.webp" alt="New Arrival" loading="lazy">
-                          <span class="badge-new">New</span>
-                        </div>
-                        <div class="product-info">
-                          {% comment %} <h5>Fitness Tracker</h5> {% endcomment %}
-                          {% comment %} <p class="price">$69.99</p> {% endcomment %}
-                          <a href="#" class="btn-view">View Product</a>
-                        </div>
-                      </div>
-                      <div class="product-card">
-                        <div class="product-image">
-                          <img src="assets/img/product/product-6.webp" alt="New Arrival" loading="lazy">
-                          <span class="badge-new">New</span>
-                        </div>
-                        <div class="product-info">
-                          {% comment %} <h5>Wireless Charger</h5> {% endcomment %}
-                          {% comment %} <p class="price">$39.99</p> {% endcomment %}
-                          <a href="#" class="btn-view">View Product</a>
-                        </div>
-                      </div>
-                      <div class="product-card">
-                        <div class="product-image">
-                          <img src="assets/img/product/product-7.webp" alt="New Arrival" loading="lazy">
-                          <span class="badge-new">New</span>
-                        </div>
-                        <div class="product-info">
-                          {% comment %} <h5>Smart Bulb Set</h5> {% endcomment %}
-                          {% comment %} <p class="price">$49.99</p> {% endcomment %}
-                          <a href="#" class="btn-view">View Product</a>
-                        </div>
-                      </div>
-                      <div class="product-card">
-                        <div class="product-image">
-                          <img src="assets/img/product/product-8.webp" alt="New Arrival" loading="lazy">
-                          <span class="badge-new">New</span>
-                        </div>
-                        <div class="product-info">
-                          {% comment %} <h5>Portable Power Bank</h5> {% endcomment %}
-                          {% comment %} <p class="price">$59.99</p> {% endcomment %}
-                          <a href="#" class="btn-view">View Product</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Sale Tab -->
-                  <div class="tab-pane fade" id="sale-content-1862" role="tabpanel" aria-labelledby="sale-tab">
-                    <div class="product-grid">
-                      <div class="product-card">
-                        <div class="product-image">
-                          <img src="assets/img/product/product-9.webp" alt="Sale Product" loading="lazy">
-                          {% comment %} <span class="badge-sale">-30%</span> {% endcomment %}
-                        </div>
-                        <div class="product-info">
-                          {% comment %} <h5>Wireless Keyboard</h5> {% endcomment %}
-                          {% comment %} <p class="price"><span class="original-price">$89.99</span> $62.99</p> {% endcomment %}
-                          <a href="#" class="btn-view">View Product</a>
-                        </div>
-                      </div>
-                      <div class="product-card">
-                        <div class="product-image">
-                          <img src="assets/img/product/product-10.webp" alt="Sale Product" loading="lazy">
-                          {% comment %} <span class="badge-sale">-25%</span> {% endcomment %}
-                        </div>
-                        <div class="product-info">
-                          {% comment %} <h5>Gaming Mouse</h5> {% endcomment %}
-                          {% comment %} <p class="price"><span class="original-price">$59.99</span> $44.99</p> {% endcomment %}
-                          <a href="#" class="btn-view">View Product</a>
-                        </div>
-                      </div>
-                      <div class="product-card">
-                        <div class="product-image">
-                          <img src="assets/img/product/product-11.webp" alt="Sale Product" loading="lazy">
-                          {% comment %} <span class="badge-sale">-40%</span> {% endcomment %}
-                        </div>
-                        <div class="product-info">
-                          {% comment %} <h5>Desk Lamp</h5> {% endcomment %}
-                          {% comment %} <p class="price"><span class="original-price">$49.99</span> $29.99</p> {% endcomment %}
-                          <a href="#" class="btn-view">View Product</a>
-                        </div>
-                      </div>
-                      <div class="product-card">
-                        <div class="product-image">
-                          <img src="assets/img/product/product-12.webp" alt="Sale Product" loading="lazy">
-                          {% comment %} <span class="badge-sale">-20%</span> {% endcomment %}
-                        </div>
-                        <div class="product-info">
-                          {% comment %} <h5>USB-C Hub</h5> {% endcomment %}
-                          {% comment %} <p class="price"><span class="original-price">$39.99</span> $31.99</p> {% endcomment %}
-                          <a href="#" class="btn-view">View Product</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Categories Tab -->
-                  <div class="tab-pane fade" id="category-content-1862" role="tabpanel" aria-labelledby="category-tab">
-                    <div class="category-grid">
-                      <div class="category-column">
-                        <h4>All Perfumes</h4>
-                        <ul>
-                          <li><a href="#">Perfume for Women</a></li>
-                          <li><a href="#">Perfume for Men</a></li>
-                          <li><a href="#">Perfume Oils</a></li>
-                          <li><a href="#">Unisex Scents</a></li>
-                        </ul>
-                      </div>
-                      <div class="category-column">
-                        <h4>Self Care Essentials</h4>
-                        <ul>
-                          <li><a href="#">Body Oils</a></li>
-                          <li><a href="#">Hair and Beard Care</a></li>
-                          <li><a href="#">Skin and Hair Care</a></li>
-                          <li><a href="#">Aromatherapy</a></li>
-                          <li><a href="#">Self-Care Kit</a></li>
-                        </ul>
-                      </div>
-                      <div class="category-column">
-                        <h4>Thoughtful Gifting</h4>
-                        <ul>
-                          <li><a href="#">Gift Set</a></li>
-                          <li><a href="#">Scented Candle</a></li>
-                          <li><a href="#">Minimalist Keepsakes</a></li>
-                          <li><a href="#">Under &#8358; 10,000</a></li>
-                          <li><a href="#">Celebration Boxes</a></li>
-                        </ul>
-                      </div>
-                      <div class="category-column">
-                        <h4>Explore DHARR</h4>
-                        <ul>
-                          <li><a href="#">DHARR Exclusives</a></li>
-                          <li><a href="#">Scents Quiz</a></li>
-                          <li><a href="#">Blog</a></li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-
-              </div>
-              
-              
+               
              <!-- End Products Mega Menu 1 Desktop View -->
 
               <!--</li>
@@ -792,7 +547,7 @@
           </ul>
         </nav>
       </div>
-    </div>
+    </div>  
 
     <!-- Announcement Bar -->
     <div class="announcement-bar py-2">
@@ -923,6 +678,26 @@
       </div>
     </div>
     </div>
+       
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    {% if messages %}
+        {% for message in messages %}
+        <div class="toast align-items-center border-0 show mb-2"
+             role="alert" aria-live="assertive" aria-atomic="true"
+             style="background-color:#debc61; color:#fffff; font-weight:500;">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ message }}
+                </div>
+                <button type="button" class="btn-close me-2 m-auto"
+                        data-bs-dismiss="toast" aria-label="Close"
+                        style="filter: invert(1);"></button>
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
 
     <div class="footer-bottom">
       <div class="container">
@@ -979,6 +754,15 @@
   <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
   <script src="{% static 'assets/vendor/drift-zoom/Drift.min.js' %}"></script>
   <script src="{% static 'assets/vendor/purecounter/purecounter_vanilla.js '%}"></script>
+      <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+        toastElList.map(function (toastEl) {
+          return new bootstrap.Toast(toastEl).show();
+        })
+      });
+    </script>
+
 
   <!-- Main JS File -->
   <script src="{% static 'assets/js/main.js' %}"></script>
