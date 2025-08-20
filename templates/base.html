@@ -128,11 +128,11 @@
           <i class="bi bi-person-circle me-2"></i>
           <span>My Profile</span>
         </a>
-        <a class="dropdown-item d-flex align-items-center" href="#">
+        <a class="dropdown-item d-flex align-items-center" href="{% url 'cart:view_cart' %}">
           <i class="bi bi-bag-check me-2"></i>
-          <span>My Orders</span>
+          <span>My Cart</span>
         </a>
-        <a class="dropdown-item d-flex align-items-center" href="#">
+        <a class="dropdown-item d-flex align-items-center" href="{% url 'products:wishlist' %}">
           <i class="bi bi-heart me-2"></i>
           <span>My Wishlist</span>
         </a>
@@ -684,7 +684,7 @@
         {% for message in messages %}
         <div class="toast align-items-center border-0 show mb-2"
              role="alert" aria-live="assertive" aria-atomic="true"
-             style="background-color:#debc61; color:#fffff; font-weight:500;">
+             style="background-color:#debc61; color:#ffff; font-weight:500;">
             <div class="d-flex">
                 <div class="toast-body">
                     {{ message }}
