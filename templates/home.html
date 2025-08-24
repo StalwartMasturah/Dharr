@@ -315,7 +315,7 @@
               <div class="col-12 col-md-4" data-aos="fade-up" data-aos-delay="200">
                 <div class="category-card">
                   <img src="static/img/product/difa.jpg" alt="Diffusers" class="img-fluid" loading="lazy">
-                  <a href="#" class="category-link">
+                  <a href="{% url 'products:filter_by_subcategory' subcategory_name="diffusers" %}" class="category-link">
                  DIFFUSER<i class="bi bi-arrow-right"></i>
                   </a>
                 </div>
@@ -790,7 +790,7 @@
                 <img src="static/img/All/aro.jpg" alt="Product" class="img-fluid main-img">
                 <img src="static/img/All/aro.jpg" alt="Product Hover" class="img-fluid hover-img">
                 <div class="product-overlay">
-                  <a href="#" class="btn-cart"><i class="bi bi-cart-plus"></i> Add to Cart</a>
+                  <a href="{% url 'cart:add_to_cart' 18 %}" class="btn-cart"><i class="bi bi-cart-plus"></i> Add to Cart</a>
                   <div class="product-actions">
                     <a href="#" class="action-btn"><i class="bi bi-heart"></i></a>
                     <a href="#" class="action-btn"><i class="bi bi-eye"></i></a>

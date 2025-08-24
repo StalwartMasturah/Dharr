@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Product, Category, subCategory,Wishlist
+from .models import Product, Category, SubCategory,Wishlist
 from django.conf import settings
 from collections import defaultdict 
 from django.contrib.auth.decorators import login_required
@@ -22,7 +22,7 @@ def products_by_category(request, category_id):
     })
 
 def products_by_subcategory(request, subcategory_id):
-    subcategory = get_object_or_404(subCategory, id=subcategory_id)
+    subcategory = get_object_or_404(SubCategory, id=subcategory_id)
     products = Product.objects.filter(subcategory=subcategory, is_available=True)
     return render(request, 'product/products_by_subcategory.html', {
         'subcategory': subcategory,
@@ -35,18 +35,14 @@ def all_product_list(request):
     #add pagination
     categories = Category.objects.all()
     products = Product.objects.all().order_by('-category')
-    # grouped_products = defaultdict(list)
 
     # get users wishlist
     user_wishlist =[] 
     if request.user.is_authenticated:
         user_wishlist = Wishlist.objects.filter(user=request.user).values_list('added_product_id', flat=True)
 
-    # for product in products:
-    #     grouped_products[product.category.name].append(product)
-        
     page = request.GET.get('page', 1)
-    paginator = Paginator(products, 4)
+    paginator = Paginator(products, 8)
     
     try:
         top_products = paginator.page(page)
@@ -116,3 +112,158 @@ def add_to_wishlist(request, product_id):
         messages.error(request, "Product not found.")
 
     return redirect(request.META.get('HTTP_REFERER', 'products:products'))
+
+def new_arrivals(request):
+    products = Product.objects.filter(is_new_arrival=True, is_available=True).order_by('-updated_at')
+    wishlist_count = Wishlist.objects.filter(user=request.user).count if request.user.is_authenticated else 0
+    # add pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(products, 8)
+    
+    try:
+        top_products = paginator.page(page)
+        next_page = int(page) + 1
+        prev_page = int(page) - 1
+    except PageNotAnInteger:
+        top_products = paginator.page(1)
+        next_page = 2
+        prev_page = 1
+        
+    except EmptyPage:
+        top_products = paginator.page(paginator.num_pages)
+        next_page = paginator.num_pages 
+        prev_page = paginator.num_pages - 1
+        
+    user_wishlist =[] 
+    if request.user.is_authenticated:
+        user_wishlist = Wishlist.objects.filter(user=request.user).values_list('added_product_id', flat=True)
+        # wishlist_count = user_wishlist.count()
+        
+    return render(request, 'product/all_product_list.html', 
+            { 'products': top_products, 'user_wishlist' : list(user_wishlist),
+              'next_page': next_page, 'prev_page': prev_page,
+              'wishlist_count': wishlist_count })
+
+def trending(request):
+    products = Product.objects.filter(is_trending=True, is_available=True).order_by('-updated_at')
+    wishlist_count = Wishlist.objects.filter(user=request.user).count if request.user.is_authenticated else 0
+    # add pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(products, 8)
+    
+    try:
+        top_products = paginator.page(page)
+        next_page = int(page) + 1
+        prev_page = int(page) - 1
+    except PageNotAnInteger:
+        top_products = paginator.page(1)
+        next_page = 2
+        prev_page = 1
+        
+    except EmptyPage:
+        top_products = paginator.page(paginator.num_pages)
+        next_page = paginator.num_pages 
+        prev_page = paginator.num_pages - 1
+        
+    user_wishlist =[] 
+    if request.user.is_authenticated:
+        user_wishlist = Wishlist.objects.filter(user=request.user).values_list('added_product_id', flat=True)
+        # wishlist_count = user_wishlist.count()
+        
+    return render(request, 'product/all_product_list.html', 
+            { 'products': top_products, 'user_wishlist' : list(user_wishlist),
+              'next_page': next_page, 'prev_page': prev_page,
+              'wishlist_count': wishlist_count })
+    
+def best_sellers(request):
+    products = Product.objects.filter(subcategory__name__iexact="combo for her").order_by('-updated_at')
+    wishlist_count = Wishlist.objects.filter(user=request.user).count if request.user.is_authenticated else 0
+    # add pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(products, 8)
+    
+    try:
+        top_products = paginator.page(page)
+        next_page = int(page) + 1
+        prev_page = int(page) - 1
+    except PageNotAnInteger:
+        top_products = paginator.page(1)
+        next_page = 2
+        prev_page = 1
+        
+    except EmptyPage:
+        top_products = paginator.page(paginator.num_pages)
+        next_page = paginator.num_pages 
+        prev_page = paginator.num_pages - 1
+        
+    user_wishlist =[] 
+    if request.user.is_authenticated:
+        user_wishlist = Wishlist.objects.filter(user=request.user).values_list('added_product_id', flat=True)
+        # wishlist_count = user_wishlist.count()
+        
+    return render(request, 'product/all_product_list.html', 
+            { 'products': top_products, 'user_wishlist' : list(user_wishlist),
+              'next_page': next_page, 'prev_page': prev_page,
+              'wishlist_count': wishlist_count })
+    
+def filter_by_subcategory(request, subcategory_name):
+    products = Product.objects.filter(subcategory__name__iexact=subcategory_name).order_by('-updated_at')
+    wishlist_count = Wishlist.objects.filter(user=request.user).count if request.user.is_authenticated else 0
+    # add pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(products, 8)
+    
+    try:
+        top_products = paginator.page(page)
+        next_page = int(page) + 1
+        prev_page = int(page) - 1
+    except PageNotAnInteger:
+        top_products = paginator.page(1)
+        next_page = 2
+        prev_page = 1
+        
+    except EmptyPage:
+        top_products = paginator.page(paginator.num_pages)
+        next_page = paginator.num_pages 
+        prev_page = paginator.num_pages - 1
+        
+    user_wishlist =[] 
+    if request.user.is_authenticated:
+        user_wishlist = Wishlist.objects.filter(user=request.user).values_list('added_product_id', flat=True)
+        # wishlist_count = user_wishlist.count()
+        
+    return render(request, 'product/all_product_list.html', 
+            { 'products': top_products, 'user_wishlist' : list(user_wishlist),
+              'next_page': next_page, 'prev_page': prev_page,
+              'wishlist_count': wishlist_count })
+
+def filter_by_category(request, category_name):
+    products = Product.objects.filter(category__name__iexact=category_name).order_by('-updated_at')
+    wishlist_count = Wishlist.objects.filter(user=request.user).count if request.user.is_authenticated else 0
+    # add pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(products, 8)
+    
+    try:
+        top_products = paginator.page(page)
+        next_page = int(page) + 1
+        prev_page = int(page) - 1
+    except PageNotAnInteger:
+        top_products = paginator.page(1)
+        next_page = 2
+        prev_page = 1
+        
+    except EmptyPage:
+        top_products = paginator.page(paginator.num_pages)
+        next_page = paginator.num_pages 
+        prev_page = paginator.num_pages - 1
+        
+    user_wishlist =[] 
+    if request.user.is_authenticated:
+        user_wishlist = Wishlist.objects.filter(user=request.user).values_list('added_product_id', flat=True)
+        # wishlist_count = user_wishlist.count()
+        
+    return render(request, 'product/all_product_list.html', 
+            { 'products': top_products, 'user_wishlist' : list(user_wishlist),
+              'next_page': next_page, 'prev_page': prev_page,
+              'wishlist_count': wishlist_count })
