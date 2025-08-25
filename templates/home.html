@@ -296,7 +296,7 @@
             <li class="nav-item" role="presentation">
               <button class="nav-link active" id="category-cards-women-tab" data-bs-toggle="tab"
                 data-bs-target="#category-cards-women-content" type="button" role="tab"
-                aria-controls="category-cards-women-content" aria-selected="true">GIFT SETS</button>
+                aria-controls="category-cards-women-content" aria-selected="true">COMBO DEALS</button>
             </li>
             <li class="nav-item" role="presentation">
               <button class="nav-link" id="category-cards-accesoires-tab" data-bs-toggle="tab"
@@ -325,7 +325,7 @@
               <div class="col-12 col-md-4" data-aos="fade-up" data-aos-delay="300">
                 <div class="category-card">
                   <img src="static/img/product/Cls.jpg" alt="Closet Freshner" class="img-fluid" loading="lazy">
-                  <a href="#" class="category-link">
+                  <a href="{% url 'products:filter_by_subcategory' subcategory_name="Humidifiers" %}" class="category-link">
                     CLOSET FRESHNER<i class="bi bi-arrow-right"></i>
                   </a>
                 </div>
@@ -335,8 +335,8 @@
               <div class="col-12 col-md-4" data-aos="fade-up" data-aos-delay="400">
                 <div class="category-card">
                   <img src="static/img/product/IF.jpg" alt="HUMIDIFIER" class="img-fluid" loading="lazy">
-                  <a href="#" class="category-link">
-                    DIFFUSER<i class="bi bi-arrow-right"></i>
+                  <a href="{% url 'products:filter_by_subcategory' subcategory_name="Essential Oil" %}" class="category-link">
+                    ESSENTIAL OILS<i class="bi bi-arrow-right"></i>
                   </a>
                 </div>
               </div>
@@ -352,8 +352,8 @@
                 <div class="category-card">
                   <img src="static/img/product/ga.jpg" alt="gift" class="img-fluid"
                     loading="lazy">
-                  <a href="#" class="category-link">
-                     MYSTICAL GIFT SET <i class="bi bi-arrow-right"></i>
+                  <a href="{% url 'products:filter_by_subcategory' subcategory_name="Combo for him" %}" class="category-link">
+                     COMBO FOR HIM <i class="bi bi-arrow-right"></i>
                   </a>
                 </div>
               </div>
@@ -362,8 +362,8 @@
               <div class="col-12 col-md-4" data-aos="fade-up" data-aos-delay="300">
                 <div class="category-card">
                   <img src="static/img/product/gad.jpg" alt="" class="img-fluid" loading="lazy">
-                  <a href="#" class="category-link">
-                    ZARA GIFT SET <i class="bi bi-arrow-right"></i>
+                  <a href="{% url 'products:filter_by_subcategory' subcategory_name="Combo for her" %}" class="category-link">
+                    COMBO FOR HER <i class="bi bi-arrow-right"></i>
                   </a>
                 </div>
               </div>
@@ -373,8 +373,8 @@
                 <div class="category-card">
                   <img src="static/img/product/Gift Set.jpg" alt="gift" class="img-fluid"
                     loading="lazy">
-                  <a href="#" class="category-link">
-                    2 IN 1 GIFT SET<i class="bi bi-arrow-right"></i>
+                  <a href="{% url 'products:filter_by_subcategory' subcategory_name="Unisex Combo" %}" class="category-link">
+                    UNISEX COMBO<i class="bi bi-arrow-right"></i>
                   </a>
                 </div>
               </div>
@@ -389,8 +389,8 @@
               <div class="col-12 col-md-4" data-aos="fade-up" data-aos-delay="200">
                 <div class="category-card">
                   <img src="static/img/product/Rig1.jpg" alt="25OML BODY SPRAY" class="img-fluid" loading="lazy">
-                  <a href="#" class="category-link">
-                    BODY SPRAY<i class="bi bi-arrow-right"></i>
+                  <a href="{% url 'products:filter_by_subcategory' subcategory_name="Mini" %}" class="category-link">
+                    MINI BODY SPRAY<i class="bi bi-arrow-right"></i>
                   </a>
                 </div>
               </div>
@@ -399,7 +399,7 @@
               <div class="col-12 col-md-4" data-aos="fade-up" data-aos-delay="300">
                 <div class="category-card">
                   <img src="static/img/product/kidsba.jpg" alt="Kids Body Spray" class="img-fluid" loading="lazy">
-                  <a href="#" class="category-link">
+                  <a href="{% url 'products:filter_by_subcategory' subcategory_name="Kids BodySpray" %}" class="category-link">
                     KIDS BODY SPRAY <i class="bi bi-arrow-right"></i>
                   </a>
                 </div>
@@ -409,7 +409,7 @@
               <div class="col-12 col-md-4" data-aos="fade-up" data-aos-delay="400">
                 <div class="category-card">
                   <img src="static/img/bm.jpg" alt="Body Mist" class="img-fluid" loading="lazy">
-                  <a href="#" class="category-link">
+                  <a href="{% url 'products:filter_by_subcategory' subcategory_name="236ML BodyMist" %}" class="category-link">
                     BODY MISTS<i class="bi bi-arrow-right"></i>
                   </a>
                 </div>
@@ -724,7 +724,7 @@
                 <img src="static/img/All/band.jpg" alt="Product" class="img-fluid main-img">
                 <img src="static/img/All/brand.jpg" alt="Product Hover" class="img-fluid hover-img">
                 <div class="product-overlay"> 
-                  <a href="#" class="btn-cart"><i class="bi bi-cart-plus"></i> Add to Cart</a>
+                  <a href="{% url 'cart:add_to_cart' 16 %}" class="btn-cart"><i class="bi bi-cart-plus"></i> Add to Cart</a>
                   <div class="product-actions">
                     <a href="#" class="action-btn"><i class="bi bi-heart"></i></a>
                     <a href="#" class="action-btn"><i class="bi bi-eye"></i></a>
@@ -757,7 +757,7 @@
                 <img src="static/img/All/confet.jpg" alt="Product" class="img-fluid main-img">
                 <img src="static/img/All/confet.jpg" alt="Product Hover" class="img-fluid hover-img">
                 <div class="product-overlay">
-                  <a href="#" class="btn-cart"><i class="bi bi-cart-plus"></i> Add to Cart</a>
+                  <a href="{% url 'cart:add_to_cart' 17 %}" class="btn-cart"><i class="bi bi-cart-plus"></i> Add to Cart</a>
                   <div class="product-actions">
                     <a href="#" class="action-btn"><i class="bi bi-heart"></i></a>
                     <a href="#" class="action-btn"><i class="bi bi-eye"></i></a>
@@ -822,7 +822,7 @@
                 <img src="static/img/All/band2.jpg" alt="Product" class="img-fluid main-img">
                 <img src="static/img/All/band2.jpg" alt="Product Hover" class="img-fluid hover-img">
                 <div class="product-overlay">
-                  <a href="#" class="btn-cart"><i class="bi bi-cart-plus"></i> Add to Cart</a>
+                  <a href="{% url 'cart:add_to_cart' 19 %}" class="btn-cart"><i class="bi bi-cart-plus"></i> Add to Cart</a>
                   <div class="product-actions">
                     <a href="#" class="action-btn"><i class="bi bi-heart"></i></a>
                     <a href="#" class="action-btn"><i class="bi bi-eye"></i></a>
@@ -856,7 +856,7 @@
                 <img src=" static/img/All/mist.jpg" alt="Product" class="img-fluid main-img">
                 <img src="static/img/All/mist.jpg" alt="Product Hover" class="img-fluid hover-img">
                 <div class="product-overlay">
-                  <a href="#" class="btn-cart"><i class="bi bi-cart-plus"></i> Add to Cart</a>
+                  <a href="{% url 'cart:add_to_cart' 20 %}" class="btn-cart"><i class="bi bi-cart-plus"></i> Add to Cart</a>
                   <div class="product-actions">
                     <a href="#" class="action-btn"><i class="bi bi-heart"></i></a>
                     <a href="#" class="action-btn"><i class="bi bi-eye"></i></a>
@@ -889,7 +889,7 @@
                 <img src="static/img/All/Airm.jpg" alt="Product" class="img-fluid main-img">
                 <img src="static/img/All/Airm.jpg" alt="Product Hover" class="img-fluid hover-img">
                 <div class="product-overlay">
-                  <a href="#" class="btn-cart"><i class="bi bi-cart-plus"></i> Add to Cart</a>
+                  <a href="{% url 'cart:add_to_cart' 9 %}" class="btn-cart"><i class="bi bi-cart-plus"></i> Add to Cart</a>
                   <div class="product-actions">
                     <a href="#" class="action-btn"><i class="bi bi-heart"></i></a>
                     <a href="#" class="action-btn"><i class="bi bi-eye"></i></a>
@@ -922,7 +922,7 @@
                 <img src="static/img/All/cople.jpg" alt="Product" class="img-fluid main-img">
                 <img src="static/img/All/cople.jpg" alt="Product Hover" class="img-fluid hover-img">
                 <div class="product-overlay">
-                  <a href="#" class="btn-cart"><i class="bi bi-cart-plus"></i> Add to Cart</a>
+                  <a href="{% url 'cart:add_to_cart' 25 %}" class="btn-cart"><i class="bi bi-cart-plus"></i> Add to Cart</a>
                   <div class="product-actions">
                     <a href="#" class="action-btn"><i class="bi bi-heart"></i></a>
                     <a href="#" class="action-btn"><i class="bi bi-eye"></i></a>
@@ -954,7 +954,7 @@
                 <img src="static/img/All/lal.jpg" alt="Product" class="img-fluid main-img">
                 <img src="static/img/All/lal.jpg" alt="Product Hover" class="img-fluid hover-img">
                 <div class="product-overlay">
-                  <a href="#" class="btn-cart"><i class="bi bi-cart-plus"></i> Add to Cart</a>
+                  <a href="{% url 'cart:add_to_cart' 24 %}" class="btn-cart"><i class="bi bi-cart-plus"></i> Add to Cart</a>
                   <div class="product-actions">
                     <a href="#" class="action-btn"><i class="bi bi-heart"></i></a>
                     <a href="#" class="action-btn"><i class="bi bi-eye"></i></a>
