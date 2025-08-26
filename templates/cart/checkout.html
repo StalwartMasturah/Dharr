@@ -15,12 +15,15 @@
           <li class="current">Checkout</li>
         </ol>
       </nav>
-
         <div class="container text-center mt-5">
+          <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          </form> 
 
     <h2>Proceed to Payment</h2>
     <p class="mb-4">You’re about to pay <strong>₦{{ grand_total }} {{user.name}}</strong></p>
-       <button type="submit" onclick="makePayment()" class="btn btn-brand color">Pay Now</button>
+    <button type="button" onclick="makePayment()" class="btn btn-brand color">Pay Now</button>
  
     <script>
       function hideReference(length = 8) {
@@ -30,7 +33,7 @@
                     result += chars.charAt(Math.floor(Math.random() * chars.length));
                 }
                 return result;
-            }
+}
    function makePayment() {
 const initpay = new OneAppCheckout({
       publickey: "1apptest_pb_dd7e09420d59f22be6a584364b2b66ba", //replace with your public key
@@ -41,7 +44,6 @@ const initpay = new OneAppCheckout({
       phone: "09012345678",
       reference: hideReference(),
       currency: "NGN",    
-
       onComplete:async (response) => {
         //loading.value = false
         if((response.status) && (response.responsecode == '01')){
@@ -54,19 +56,12 @@ const initpay = new OneAppCheckout({
         }
       }
   });
-  
-
   initpay.makePayment()   //inittiate the payment
 }
-      
-</script>
-
-     
+</script> 
     <br><br>
     <a href="{% url 'cart:view_cart' %}">← Back to Cart</a>
-
   </div>
-
     </div>
   </div> 
 </main>

@@ -3,6 +3,10 @@ from django.shortcuts import redirect,render,get_object_or_404
 from product.models import Product
 from django.contrib.auth.decorators import login_required
 from.models import Cart, CartItem
+from .models import Order, OrderItem
+from django.contrib import messages
+from django.shortcuts import redirect
+from .forms import OrderForm
 
 # Create your views here.
 @login_required(login_url='/account/login/')  # redirect to login if not authenticated
@@ -57,22 +61,75 @@ def checkout_view(request):
 from django.shortcuts import render
 @login_required
 
+# def checkout(request):
+#     if request.user.is_authenticated:
+#         cart_items = Cart.objects.filter(user=request.user)
+#     else:
+#         session_key = request.session.session_key
+#         if not session_key:
+#             request.session.create()
+#             session_key = request.session.session_key
+#         cart_items = Cart.objects.filter(session_key=session_key)
+
+#     grand_total = sum(item.total_price for item in cart_items)
+
+#     return render(request, 'cart/checkout.html', {
+#         'cart_items': cart_items,
+#         'grand_total': grand_total
+#     })
+
 def checkout(request):
     if request.user.is_authenticated:
-        cart_items = Cart.objects.filter(user=request.user)
+        cart = Cart.objects.get(user=request.user)
     else:
         session_key = request.session.session_key
         if not session_key:
             request.session.create()
             session_key = request.session.session_key
-        cart_items = Cart.objects.filter(session_key=session_key)
+        cart = Cart.objects.get(session_key=session_key)
 
-    grand_total = sum(item.total_price for item in cart_items)
+    cart_items = cart.items.all()
+    grand_total = cart.total_price
 
-    return render(request, 'cart/checkout.html', {
-        'cart_items': cart_items,
-        'grand_total': grand_total
+    if request.method == "POST":
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.user = request.user if request.user.is_authenticated else None
+            order.subtotal = grand_total
+            order.total_amount = grand_total
+            order.session_key = request.session.session_key
+            order.payment_status = "pending"
+            order.save()
+
+            for item in cart_items:
+                OrderItem.objects.create(
+                    order=order,
+                    product=item.product,
+                    product_name=item.product.name,
+                    product_price=item.product.price,
+                    quantity=item.quantity,
+                )
+
+            return redirect("cart:payment_page", order_id=order.id)
+        else:
+            print("Form errors:", form.errors)  
+    else:
+        form = OrderForm()
+
+    return render(request, "cart/checkout.html", {
+        "cart_items": cart_items,
+        "grand_total": grand_total,
+        "form": form,
     })
 
 def process_payment(request):
-    return render(request, 'cart/payment_success.html')  
+    return render(request, 'cart/payment_success.html') 
+ 
+@login_required
+def payment_page(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+
+    # This is where you’ll integrate Paystack later
+    return render(request, "cart/checkout.html", {"order": order})
+

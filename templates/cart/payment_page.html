@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Your Cart{% endblock %}
+
+{% block css %}
+<link href="{% static 'CSS/style.css' %}" rel="stylesheet">
+{% endblock %}
+
+{# ✅ Main HTML content block #}
+{% block content %}
+<main class="main">
+  <div class="page-title light-background">
+    <div class="container">
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="{% url 'about:home' %}">Home</a></li>
+          <li class="current">Checkout</li>
+        </ol>
+      </nav>
+
+      <div class="container text-center mt-5">
+        <h2>Proceed to Payment</h2>
+        <p class="mb-4">
+          You’re about to pay <strong>₦{{ order.total_amount }} {{ request.user.user.name }}</strong>
+        </p>
+
+        <button id="payButton" class="btn btn-brand color">Pay Now</button>
+
+        <br><br>
+        <a href="{% url 'cart:view_cart' %}">← Back to Cart</a>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
+
+{# ✅ JS goes here, separate from content block #}
+{% block extra_js %}
+<script src="https://js.oneappgo.com/v1/checkout.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const payButton = document.getElementById('payButton');
+    if (payButton) {
+      payButton.addEventListener('click', makePayment);
+    }
+  });
+
+  function hideReference(length = 8) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+  }
+
+  function makePayment() {
+    if (typeof OneAppCheckout === 'undefined') {
+      alert("Payment SDK failed to load.");
+      return;
+    }
+
+    const initpay = new OneAppCheckout({
+      publickey: "1apptest_pb_dd7e09420d59f22be6a584364b2b66ba",  // Replace with your real public key
+      amount: "{{ grand_total|default:0 }}",
+      fname: "{{ request.user.first_name|default:'John' }}",
+      customer_email: "{{ request.user.email|default:'johndoe@example.com' }}",
+      phone: "09012345678",
+      reference: hideReference(),
+      currency: "NGN",
+      onComplete: async (response) => {
+        if ((response.status) && (response.responsecode == '01')) {
+          var dref = response.reference;
+          var token = response.token;
+          var initiate_ref = response.initiate_ref;
+          successCallback(initiate_ref, token, dref, "{{ request.user.email }}");
+        } else {
+          alert(response.message);
+        }
+      }
+    });
+
+    initpay.makePayment();
+  }
+</script>
+{% endblock %}
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Your Cart{% endblock %}
+{% block css %}
+<link href="{% static 'CSS/style.css' %}" rel="stylesheet">
+ 
+
+  <style>
+    /* Hide default radio look */
+    input[type="radio"] {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid #debc61;
+      border-radius: 50%;
+      outline: none;
+      cursor: pointer;
+      position: relative;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    /* Checked state */
+    input[type="radio"]:checked {
+      background-color: #debc61;
+      border-color: #debc61;
+    }
+
+    /* White dot inside when checked */
+    input[type="radio"]:checked::after {
+      content: "";
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: 8px;
+      height: 8px;
+      background: white;
+      border-radius: 50%;
+    }
+
+    /* Default label look */
+    label {
+      margin-right: 20px;
+      font-weight: 500;
+      cursor: pointer;
+      color: #333; /* default text color */
+    }
+
+    /* Highlight label when selected */
+    input[type="radio"]:checked + label {
+      color: #debc61;
+      font-weight: 600;
+    }
+  </style>
+{% endblock %}
+{% block content %}
+ <main class="main">
+  <div class="page-title light-background">
+    <div class="container">
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="{% url 'about:home' %}">Home</a></li>
+          <li class="current">Checkout</li>
+        </ol>
+      </nav>
+        <div class="container text-center mt-5">
+          <h1 class="mb-0">Checkout</h1>
+        </div>      
+    </div>
+  </div>
+  <div class="container padding-bottom-3x mb-2">
+    <div class="row">
+      <div class="col-lg-8">
+        {% comment %} <div class="checkout-steps">
+          <a href="{% url 'cart:view_cart' %}">1. Shopping Cart</a>
+          <a href="{% url 'cart:checkout' %}" class="active">2. Checkout</a>
+          <a href="#">3. Order Complete</a>
+        </div> {% endcomment %}
+        {% comment %} <form class="card mt-4" method="post" action="{% url 'cart:checkout' %}">
+          {% csrf_token %}
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="first_name">First Name</label>
+                  <input class="form-control" type="text" name="first_name" id="first_name" value="{{ user.first_name }}" required>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="last_name">Last Name</label>
+                  <input class="form-control" type="text" name="last_name" id="last_name" value="{{ user.last_name }}" required>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input class="form-control" type="email" name="email" id="email" value="{{ user.email }}" required>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input class="form-control" type="tel" name="phone" id="phone" value="{{ profile.phone_number }}" required>
+            </div>
+            <div class="form-group">
+              <label for="address">Shipping Address</label>
+              <input class="form-control" type="text" name="address" id="address" value="{{ profile.address }}" required>
+            </div>
+            <div class="form-group">
+              <label for="city">City</label>
+              <input class="form-control" type="text" name="city" id="city" value="{{ profile.city }}" required>
+            </div>
+            <div class="form-group">
+              <label for="state">State/Province</label>
+              <input class="form-control" type="text" name="state" id="state" value="{{ profile.state }}" required>
+            </div>
+            <div class="form-group">
+              <label for="zip_code">ZIP/Postal Code</label>
+              <input class="form-control" type="text" name="zip_code" id="zip_code" value="{{ profile.zip_code }}" required>
+            </div>
+            <div class="form-group">
+              <label for="country">Country</label>
+              <input class="form-control" type="text" name="country" id="country" value="{{ profile.country }}" required>
+            </div>
+            <div class="form-group">
+              <label>Payment Method</label><br>
+              <input type="radio" id="oneapp" name="payment_method" value="oneapp" checked>
+              <label for="oneapp">OneApp</label><br>
+              <input type="radio" id="cod" name="payment_method" value="cod">
+              <label for="cod">Cash on Delivery (COD)</label>
+            </div>
+            <div class="form-group">
+              <label for="notes">Order Notes (Optional)</label>
+              <textarea class="form-control" name="notes" id="notes" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="coupon_code">Coupon Code (Optional)</label>
+              <input class="form-control" type="text" name="coupon_code" id="coupon_code">
+              <button type="submit" class="btn btn-secondary mt-2">Apply Coupon</button>
+            </div>
+          </div>
+        </form>
+      </div> {% endcomment %}
+
+
+  <form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  <button type="submit" class="btn btn-primary">Proceed to Payment</button>
+</form>
+
+           
+</main>
+{% endblock %}

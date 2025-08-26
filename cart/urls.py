@@ -10,6 +10,10 @@ urlpatterns = [
     path('remove/<int:cart_id>/', remove_from_cart, name='remove_from_cart'),
     path('checkout/', checkout, name='checkout'),
     path('process-payment/', process_payment, name='process_payment'),
+    path("payment/<int:order_id>/", payment_page, name="payment_page"),
+    path("payment-success/", process_payment, name="payment_success"),
+    
+
 
 
 ] 
