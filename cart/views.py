@@ -77,16 +77,15 @@ from django.shortcuts import render
 #         'cart_items': cart_items,
 #         'grand_total': grand_total
 #     })
-
 def checkout(request):
     if request.user.is_authenticated:
-        cart = Cart.objects.get(user=request.user)
+        cart, _ = Cart.objects.get_or_create(user=request.user)
     else:
         session_key = request.session.session_key
         if not session_key:
             request.session.create()
             session_key = request.session.session_key
-        cart = Cart.objects.get(session_key=session_key)
+        cart, _ = Cart.objects.get_or_create(session_key=session_key)
 
     cart_items = cart.items.all()
     grand_total = cart.total_price
@@ -113,7 +112,7 @@ def checkout(request):
 
             return redirect("cart:payment_page", order_id=order.id)
         else:
-            print("Form errors:", form.errors)  
+            print("❌ Form errors:", form.errors.as_json())  # Debug in Railway logs
     else:
         form = OrderForm()
 
