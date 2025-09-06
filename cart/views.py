@@ -7,6 +7,11 @@ from .models import Order, OrderItem
 from django.contrib import messages
 from django.shortcuts import redirect
 from .forms import OrderForm
+from django.shortcuts import render
+import uuid
+from django.http import JsonResponse
+
+
 
 # Create your views here.
 @login_required(login_url='/account/login/')  # redirect to login if not authenticated
@@ -54,8 +59,7 @@ def remove_from_cart(request, cart_id):
     cart_item.delete()
     return redirect('cart:view_cart')
 
-from django.shortcuts import render
-
+ 
 def checkout_view(request):
     return render(request, 'cart/checkout.html')
 from django.shortcuts import render
@@ -76,52 +80,79 @@ from django.shortcuts import render
 #     return render(request, 'cart/checkout.html', {
 #         'cart_items': cart_items,
 #         'grand_total': grand_total
-#     })
+#     }) 
+
+
+@login_required  
 def checkout(request):
-    if request.user.is_authenticated:
-        cart, _ = Cart.objects.get_or_create(user=request.user)
-    else:
-        session_key = request.session.session_key
-        if not session_key:
-            request.session.create()
-            session_key = request.session.session_key
-        cart, _ = Cart.objects.get_or_create(session_key=session_key)
-
+    # Get the logged-in user's cart
+    cart = get_object_or_404(Cart, user=request.user)
     cart_items = cart.items.all()
-    grand_total = cart.total_price
+    grand_total = sum(item.total_price for item in cart_items)
+    
+    # ✅ Always define form for GET requests
+    form = OrderForm()
+    
+    return render(request, 'cart/checkout.html', {
+            'form': form,
+            'cart_items': cart_items,
+            'grand_total': grand_total
+        })
+    
+    
 
-    if request.method == "POST":
-        form = OrderForm(request.POST)
-        if form.is_valid():
-            order = form.save(commit=False)
-            order.user = request.user if request.user.is_authenticated else None
-            order.subtotal = grand_total
-            order.total_amount = grand_total
-            order.session_key = request.session.session_key
-            order.payment_status = "pending"
-            order.save()
+    # if request.method == "POST":
+def checkout_pay(request):
+    
+    cart = get_object_or_404(Cart, user=request.user)
+    cart_items = cart.items.all()
+    grand_total = sum(item.total_price for item in cart_items)
+    
+    form = OrderForm(request.POST)
+    if form.is_valid():
+        # Save the order first
+        order = form.save(commit=False)
+        order.user = request.user
+        order.subtotal = grand_total
+        order.total_amount = grand_total
+        order.payment_status = "pending"
+        order.order_number = f"ORD-{uuid.uuid4().hex[:8].upper()}"  
+        order.save()
+        form.save_m2m()  # <-- Important if OrderForm has ManyToMany fields
+        
 
-            for item in cart_items:
-                OrderItem.objects.create(
-                    order=order,
-                    product=item.product,
-                    product_name=item.product.name,
-                    product_price=item.product.price,
-                    quantity=item.quantity,
-                )
+        # Create related order items
+        for item in cart_items:
+            OrderItem.objects.create(
+            order=order,
+            product=item.product,
+            product_name=item.product.name,
+            product_price=item.product.price,
+            quantity=item.quantity,
+            )
 
-            return redirect("cart:payment_page", order_id=order.id)
-        else:
-            print("❌ Form errors:", form.errors.as_json())  # Debug in Railway logs
+        # Clear the cart after successful order
+        cart.clear()
+        return JsonResponse({
+            "success": True,
+            "order_id": order.id,
+            "grand_total": grand_total,
+            "message": "Order placed successfully. Proceed to payment."
+        })
+        
     else:
-        form = OrderForm()
+        messages.error(request, "There was an error with your order. Please try again.")
 
-    return render(request, "cart/checkout.html", {
-        "cart_items": cart_items,
-        "grand_total": grand_total,
-        "form": form,
-    })
+        # messages.success(request, "Your order has been placed successfully!")
 
+        # checkout_url = (
+        # f"https://checkout.oneappgo.com/pay?"
+        # f"amount={int(grand_total * 100)}"
+        # f"&email={request.user.email}"
+        # )
+        # return redirect(checkout_url)
+            
+        
 def process_payment(request):
     return render(request, 'cart/payment_success.html') 
  
@@ -129,6 +160,48 @@ def process_payment(request):
 def payment_page(request, order_id):
     order = get_object_or_404(Order, id=order_id)
 
-    # This is where you’ll integrate Paystack later
     return render(request, "cart/checkout.html", {"order": order})
+
+
+
+
+
+    # cart, _ = Cart.objects.get_or_create(user=request.user)
+    # cart_items = cart.items.all()
+    # grand_total = cart.total_price
+    # order = None  # default
+
+    # if request.method == "POST":
+    #     form = OrderForm(request.POST)
+    #     if form.is_valid():
+    #         order = form.save(commit=False)
+    #         order.user = request.user
+    #         order.subtotal = grand_total
+    #         order.total_amount = grand_total
+    #         order.session_key = request.session.session_key
+    #         order.payment_status = "pending"
+    #         order.save()
+
+    #         # Save order items
+    #         for item in cart_items:
+    #             OrderItem.objects.create(
+    #                 order=order,
+    #                 product=item.product,
+    #                 product_name=item.product.name,
+    #                 product_price=item.product.price,
+    #                 quantity=item.quantity,
+    #             )
+
+    #         messages.success(request, "Order created. Proceed to payment.")
+    #     else:
+    #         print("❌ Form errors:", form.errors)
+    # else:
+    #     form = OrderForm()
+
+    # return render(request, "cart/checkout.html", {
+    #     "form": form,
+    #     "cart_items": cart_items,
+    #     "grand_total": grand_total,
+    #     "order": order,  
+    # })
 

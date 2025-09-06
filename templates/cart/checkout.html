@@ -16,16 +16,25 @@
         </ol>
       </nav>
         <div class="container text-center mt-5">
-          <form method="post">
-          {% csrf_token %}
-          {{ form.as_p }}
-          </form> 
+          <form method="post" id="checkoutForm">
+        {% csrf_token %}
+        {{ form.as_p }}
 
-    <h2>Proceed to Payment</h2>
-    <p class="mb-4">You’re about to pay <strong>₦{{ grand_total }} {{user.name}}</strong></p>
-    <button type="button" onclick="makePayment()" class="btn btn-brand color">Pay Now</button>
- 
+       <p class="mb-4">
+       You’re about to pay <strong>₦{{ grand_total }}</strong>
+       </p>
+
+       <!-- This button will handle both saving + payment -->
+  <button type="submit" class="btn btn-brand color">Pay Now</button>
+</form>
+
     <script>
+
+    document.getElementById("orderForm").addEventListener("submit", function(e) {
+    e.preventDefault();  // stop normal submission
+    makePayment();       // trigger OneAppCheckout
+});
+
       function hideReference(length = 8) {
                 const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
                 let result = '';
@@ -55,6 +64,17 @@ const initpay = new OneAppCheckout({
           alert(response.message)
         }
       }
+  });
+  $.ajax({
+    url:checkout_pay,
+    data:data,
+    success:function(response){
+      if(response.success){initpay....}else
+      {show error message}
+    error:function (err){
+      //do error stuffs
+    }
+       }
   });
   initpay.makePayment()   //inittiate the payment
 }
